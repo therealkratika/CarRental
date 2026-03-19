@@ -1,0 +1,171 @@
+/* 1. Main Container Setup */
+.landing {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f75050 0%, #fcf5f5 100%);
+  overflow: hidden; /* Keeps the giant text from causing horizontal scroll */
+  padding: 0 5%;
+  font-family: 'Inter', sans-serif;
+}
+.Navbar{
+    position: relative;
+    padding: 0%;
+    margin: 0%;
+}
+.background-text {
+ position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  font-size: 20vw; /* Scales with screen width */
+  font-weight: 900;
+  font-family: 'Arial Black', sans-serif;
+  z-index: 1;
+  
+  /* The "ghost" effect */
+  color: rgba(0, 0, 0, 0.03); /* Very light grey/black */
+ 
+     -webkit-text-stroke: 2px rgba(0,0,0,0.05);
+     color: transparent; 
+  
+  pointer-events: none; /* So users can click through it */
+  white-space: nowrap;
+}
+
+/* 3. The Central Car Image */
+.car-image {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2; /* Sits on top of background-text */
+  width: 40%;
+  max-width: 900px;
+}
+
+.car-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.right {
+  position: relative;
+  z-index: 3;
+  margin-top: 100px;
+  max-width: 400px;
+}
+
+.right-text h1 {
+  font-size: 3.5rem;
+  line-height: 1;
+  margin: 0;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.right-explain p {
+  color: #666;
+  margin: 20px 0;
+  font-size: 1.1rem;
+}
+
+.explore {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 4;
+  position: relative;
+}
+
+.explore:hover {
+  transform: scale(1.05);
+  background: #e63939;
+}
+
+/* Specific styling for your 'left' container to position it */
+.left {
+  position: absolute;
+  bottom: 8%;
+  right: 5%;
+  z-index: 10;
+  max-width: 350px;
+  text-align: right;
+}
+
+.left-text h2 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.left-text p {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.left-button {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.left-button button {
+  background: #eee;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.left-button-group {
+  display: grid;
+  grid-template-columns: auto auto auto; /* Creates two columns */
+  gap: 12px; /* Space between buttons */
+  justify-content: flex-end; /* Aligns buttons to the right to match your layout */
+  margin-top: 20px;
+}
+
+.action-btn {
+  /* Shape and Border */
+  background: transparent;
+  border: 1.5px solid #ff4d4d; /* Thin red border */
+  border-radius: 50px; /* Makes it a pill shape */
+  
+  /* Text Styling */
+  color: #ff4d4d;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 30px;
+  min-width: 100px;
+  
+  /* Smooth Transition */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+/* Hover State */
+.action-btn:hover {
+  background-color: #ff4d4d; /* Background turns red */
+  color: #ffffff; /* Text turns white */
+  transform: translateY(-2px); /* Optional: subtle lift effect */
+  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2); /* Soft glow */
+}
+
+
+
+/* 7. Responsiveness */
+@media (max-width: 768px) {
+  .right-text h1 { font-size: 2.5rem; }
+  .background-text { font-size: 30vw; top: 30%; }
+  .car-image { width: 90%; }
+  .left { position: relative; margin-top: 300px; right: 0; text-align: left; }
+  .left-button { justify-content: flex-start; }
+}

@@ -1,0 +1,76 @@
+/* Container styling to space items out */
+.Wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background-color: transparent;
+  position: relative;
+  color: rgb(7, 7, 7);
+  font-family: sans-serif;
+}
+
+.Title {
+  font-size: 2rem;
+  font-weight: 1000;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* List Styling */
+.list ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  cursor: pointer;
+  position: relative;
+  padding: 5px 0;
+}
+
+/* The underline hover effect */
+.list li::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #131010; /* Red underline */
+  transition: width 0.3s ease;
+}
+
+.list li:hover::after {
+  width: 100%;
+}
+
+/* Button Container */
+.button {
+  display: flex;
+  gap: 15px;
+}
+
+/* Shared Button Styles */
+.login, .signup {
+  background: transparent;
+  color: rgb(12, 9, 9);
+  border: 2px solid transparent;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-radius: 50px; /* This creates the oval shape */
+}
+
+/* Red Oval Hover Effect */
+.login:hover, .signup:hover {
+  background-color: #090606;
+  border-color: #090606;
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); /* Optional glow */
+}
