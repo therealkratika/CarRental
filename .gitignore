@@ -51,19 +51,8 @@ Thumbs.db
 .vscode/
 .idea/
 
-# =========================
-# 🔧 TypeScript
-# =========================
-*.tsbuildinfo
-
-# =========================
-# 🔥 Misc
-# =========================
-*.pid
-*.seed
-
-# =========================
-# 🚀 Optional (if using uploads)
-# =========================
-uploads/
-public/uploads/
+# Firebase Admin (VERY IMPORTANT 🔥)
+serviceAccountKey.json
+firebase-adminsdk*.json
+# local storage / temp
+*.local
