@@ -1,6 +1,7 @@
 import {useNavigate, Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import { AuthSDK } from "../Api/sdk";
+import './Auth.css';
 export default function Login(){
     const navigate = useNavigate();
     const {register, handleSubmit,setError, formState:{errors, isSubmitting}}=useForm();
@@ -14,7 +15,7 @@ export default function Login(){
     };
     return(
         <div className= "auth-wrapper">
-            <div className = "card">
+            <div className = "auth-card">
                 <div className="header">
                     <h2>Welcome Back</h2>
                 </div>
@@ -54,7 +55,7 @@ export default function Login(){
           </button>
                 </form>
                  <p className="switch-text">
-          Don’t have an account? <Link to="/">Sign up</Link>
+          Don’t have an account? <Link to="/signup">Sign up</Link>
         </p>
             </div>
         </div>

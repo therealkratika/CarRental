@@ -1,0 +1,70 @@
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  color: white;
+}
+
+/* Logo */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Nav */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+/* Hover */
+.nav-links a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Active link */
+.active {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Highlight (Add Car) */
+.highlight {
+  background: #ff3b3b;
+}
+
+/* Logout */
+.logout-btn {
+  margin-top: 20px;
+  padding: 10px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #ff3b3b;
+  color: white;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #ff1f1f;
+}

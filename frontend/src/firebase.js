@@ -1,16 +1,14 @@
-
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import{getAuth} from "firebase/app";
-
+import {getAuth} from "firebase/auth";
 const firebaseConfig = {
-  apiKey: "APIKEY",
-  authDomain: "driveox-24950.firebaseapp.com",
-  projectId: "driveox-24950",
-  storageBucket: "driveox-24950.firebasestorage.app",
-  messagingSenderId: "908348644985",
-  appId: "APP_ID",
-  measurementId: "G-J9SJNNL6L3"
+  apiKey: "AIzaSyBVfriaOdMRvOykDrpeOtRj9qALmI42oBk",
+  authDomain: "carrental-88a30.firebaseapp.com",
+  projectId: "carrental-88a30",
+  storageBucket: "carrental-88a30.firebasestorage.app",
+  messagingSenderId: "923905777805",
+  appId: "1:923905777805:web:0704840ac0bf63725682c4",
+  measurementId: "G-36T7Y0VTN6"
 };
-
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

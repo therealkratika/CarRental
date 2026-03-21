@@ -52,7 +52,8 @@ Thumbs.db
 .idea/
 
 # Firebase Admin (VERY IMPORTANT 🔥)
+backend/*.json
 serviceAccountKey.json
-firebase-adminsdk*.json
 # local storage / temp
 *.local
+backend\carrental-88a30-firebase-adminsdk-fbsvc-8aa8a47bd1.json

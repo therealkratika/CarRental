@@ -33,8 +33,8 @@ export default function Landing() {
         <p>Join our community of car enthusiasts and experience the thrill of driving your perfect car on your perfect journey.</p>
       </div>
       <div className='left-button-group'>
-        <button className='action-btn'>Rent</button>
-        <button className='action-btn'>Rent out</button>
+        <button className='action-btn' onClick={()=>navigate('/signup')}>Rent</button>
+        <button className='action-btn' onClick={()=>navigate('/signup')}>Rent out</button>
       </div>
      </div>
    </div>

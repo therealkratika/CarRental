@@ -1,6 +1,7 @@
 import {useForm} from 'react-hook-form';
 import {Link, useNavigate} from 'react-router-dom';
 import { AuthSDK } from '../Api/sdk';
+import './Auth.css';
 export default function Signup() {
   const{register,handleSubmit, setError, formState:{errors, isSubmitting}} = useForm();
   const navigate = useNavigate();
@@ -10,7 +11,11 @@ export default function Signup() {
     return;
   }
   try{
-    await AuthSDK.signup(data.username, data.email, data.password);
+    await AuthSDK.signup({
+  username: data.username,
+  email: data.email,
+  password: data.password
+});
     navigate("/login");
   }catch(err){
     setError("root", {
