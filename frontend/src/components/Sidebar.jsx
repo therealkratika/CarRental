@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthSDK } from "../Api/sdk";
-import './Sidebar.css'
+import "./Sidebar.css";
+
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -10,69 +11,42 @@ export default function Sidebar() {
     navigate("/login");
   };
 
-  // helper to highlight active link
   const isActive = (path) => location.pathname === path;
 
   return (
     <div className="sidebar">
+      <h2 className="logo">BOOKLOOP</h2>
 
-      {/* Logo */}
-      <h2 className="logo">DRIVEOX</h2>
-
-      {/* Navigation */}
       <nav className="nav-links">
-
-        <Link
-          to="/dashboard"
-          className={isActive("/dashboard") ? "active" : ""}
-        >
-          🏠 Home
-        </Link>
 
         <Link
           to="/dashboard/browse"
           className={isActive("/dashboard/browse") ? "active" : ""}
         >
-          🚗 Browse Cars
+          📚 Browse Books
         </Link>
 
         <Link
-          to="/dashboard/bookings"
-          className={isActive("/dashboard/bookings") ? "active" : ""}
+          to="/dashboard/my-books"
+          className={isActive("/dashboard/my-books") ? "active" : ""}
         >
-          📅 My Bookings
+          📖 My Books
         </Link>
 
         <Link
-          to="/dashboard/my-cars"
-          className={isActive("/dashboard/my-cars") ? "active" : ""}
-        >
-          🚘 My Cars
-        </Link>
-
-        <Link
-          to="/dashboard/add-car"
+          to="/dashboard/add-book"
           className={`highlight ${
-            isActive("/dashboard/add-car") ? "active" : ""
+            isActive("/dashboard/add-book") ? "active" : ""
           }`}
         >
-          ➕ Add Car
-        </Link>
-
-        <Link
-          to="/dashboard/profile"
-          className={isActive("/dashboard/profile") ? "active" : ""}
-        >
-          👤 Profile
+          ➕ Add Book
         </Link>
 
       </nav>
 
-      {/* Logout */}
       <button className="logout-btn" onClick={handleLogout}>
-        🚪 Logout
+        Logout
       </button>
-
     </div>
   );
 }

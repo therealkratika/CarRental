@@ -11,18 +11,23 @@ export const verifyFirebaseToken = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
     const decoded = await admin.auth().verifyIdToken(token);
+
     let user = await User.findOne({ firebaseUid: decoded.uid });
 
     if (!user) {
       user = await User.create({
         firebaseUid: decoded.uid,
         email: decoded.email,
-        username: decoded.name || "User",
+        name: decoded.name || "User",
+        avatar: decoded.picture || "",
       });
     }
+
+    // attach user to request
     req.user = user;
 
     next();
+
   } catch (error) {
     console.error(error);
     return res.status(401).json({ message: "Invalid or expired token" });

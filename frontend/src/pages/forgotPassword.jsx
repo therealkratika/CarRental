@@ -17,8 +17,6 @@ export default function ForgotPassword(){
     return(
         <div className="auth-wrapper">
 
-  <div className="background-text">DRIVEOX</div>
-
   <div className="auth-card">
     <form className="forgot-form" onSubmit={handleReset}>
       <h2>Forgot Password</h2>

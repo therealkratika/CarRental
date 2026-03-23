@@ -1,36 +1,71 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import Landing from "./pages/Landing";
-import {Routes, Route, BrowserRouter } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/forgotPassword";
-import Dashboard from "./pages/Dashboard";
+
+import BrowseBooks from "./pages/BrowseBook";
+import MyBooks from "./pages/MyBook";
+import AddBook from "./pages/AddBook";
+
+// Layout
+import Sidebar from "./components/Sidebar";
+import "./App.css";
+
+// 🔐 Optional Protected Route (Firebase check)
+const ProtectedRoute = ({ children }) => {
+  const user = localStorage.getItem("user"); // or Firebase check
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+// 📦 Dashboard Layout
+const DashboardLayout = () => {
+  return (
+    <div className="dashboard-layout">
+      <Sidebar />
+
+      <div className="main-content">
+        <Routes>
+          <Route path="browse" element={<BrowseBooks />} />
+          <Route path="my-books" element={<MyBooks />} />
+          <Route path="add-book" element={<AddBook />} />
+
+          {/* default redirect */}
+          <Route path="*" element={<Navigate to="browse" />} />
+        </Routes>
+      </div>
+    </div>
+  );
+};
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* 🌐 Public Routes */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* 📊 Dashboard */}
         <Route
-          path="/"
+          path="/dashboard/*"
           element={
-              <Landing />
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
           }
         />
-        <Route
-        path = "/signup"
-        element={ <Signup/>}
-        />
-        <Route
-        path = "/login"
-        element = {<Login/>}
-        />
-        <Route
-        path = "/forgot-password"
-        element = {<ForgotPassword/>}
-        />
-        <Route
-        path = "/dashboard"
-        element = {<Dashboard/>}
-        />
+
       </Routes>
-     </BrowserRouter>
+    </BrowserRouter>
   );
 }
