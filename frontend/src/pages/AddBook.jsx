@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AppSDK } from "../Api/appSdk";
 import "./AddBookModal.css";
+import { BookSDK } from "../Api/bookSDK";
 
 export default function AddBook() {
   const [formData, setFormData] = useState({
@@ -10,7 +11,7 @@ export default function AddBook() {
     type: "sell",
     city: "",
     area: "",
-    coordinates: { lat: "", lng: "" },
+    coordinates: { lat: null, lng: null }, // ✅ FIXED
     image: "",
     sellerName: "",
     sellerPhone: "",
@@ -24,6 +25,8 @@ export default function AddBook() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  // 📍 LOCATION
   const handleUseCurrentLocation = async () => {
     try {
       setGettingLocation(true);
@@ -34,15 +37,20 @@ export default function AddBook() {
         ...prev,
         city: loc.city,
         area: loc.area,
-        coordinates: { lat: loc.lat, lng: loc.lng },
+        coordinates: {
+          lat: Number(loc.lat),
+          lng: Number(loc.lng),
+        },
       }));
 
     } catch (err) {
-      alert(err);
+      alert(err?.message || "Location error");
     } finally {
       setGettingLocation(false);
     }
   };
+
+  // ☁️ IMAGE UPLOAD
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -58,11 +66,13 @@ export default function AddBook() {
       }));
 
     } catch (err) {
-      alert(err);
+      alert(err?.message || "Upload failed");
     } finally {
       setUploading(false);
     }
   };
+
+  // 📚 SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -85,22 +95,33 @@ export default function AddBook() {
         author: formData.author,
         isForSale: formData.type === "sell",
         isForRent: formData.type === "rent",
-        salePrice: formData.type === "sell" ? formData.price : undefined,
-        rentPricePerDay: formData.type === "rent" ? formData.price : undefined,
+        salePrice: formData.type === "sell" ? Number(formData.price) : undefined,
+        rentPricePerDay: formData.type === "rent" ? Number(formData.price) : undefined,
         image: formData.image,
 
         city: formData.city,
         area: formData.area,
-        coordinates: formData.coordinates,
+
+        // ✅ SAFE GEO FIX
+        coordinates:
+          formData.coordinates?.lat != null &&
+          formData.coordinates?.lng != null
+            ? [
+                Number(formData.coordinates.lng), // lng FIRST
+                Number(formData.coordinates.lat),
+              ]
+            : undefined,
 
         name: formData.sellerName,
         phone: formData.sellerPhone,
         email: formData.sellerEmail,
       };
 
-      await AppSDK.addBook(payload);
+      await BookSDK.create(payload);
 
-      alert("Book added successfully ");
+      alert("Book added successfully 📚");
+
+      // RESET
       setFormData({
         title: "",
         author: "",
@@ -108,7 +129,7 @@ export default function AddBook() {
         type: "sell",
         city: "",
         area: "",
-        coordinates: { lat: "", lng: "" },
+        coordinates: { lat: null, lng: null },
         image: "",
         sellerName: "",
         sellerPhone: "",
@@ -116,7 +137,7 @@ export default function AddBook() {
       });
 
     } catch (err) {
-      alert(err.message || "Error adding book");
+      alert(err?.message || "Error adding book");
     } finally {
       setLoading(false);
     }
@@ -129,18 +150,30 @@ export default function AddBook() {
       <form onSubmit={handleSubmit} className="form">
 
         <label>Book Title</label>
-        <input name="title" value={formData.title} onChange={handleChange} />
+        <input
+          name="title"
+          placeholder="Enter book title"
+          value={formData.title}
+          onChange={handleChange}
+        />
 
         <label>Author</label>
-        <input name="author" value={formData.author} onChange={handleChange} />
+        <input
+          name="author"
+          placeholder="Enter author name"
+          value={formData.author}
+          onChange={handleChange}
+        />
 
         <label>Price</label>
         <input
           name="price"
           type="number"
+          placeholder="Enter price (₹)"
           value={formData.price}
           onChange={handleChange}
         />
+
         <label>Type</label>
         <div className="toggle">
           <button
@@ -159,15 +192,26 @@ export default function AddBook() {
             For Sale
           </button>
         </div>
+
         <div className="row">
           <div>
             <label>City</label>
-            <input name="city" value={formData.city} onChange={handleChange} />
+            <input
+              name="city"
+              placeholder="Enter city (e.g. Delhi)"
+              value={formData.city}
+              onChange={handleChange}
+            />
           </div>
 
           <div>
             <label>Area</label>
-            <input name="area" value={formData.area} onChange={handleChange} />
+            <input
+              name="area"
+              placeholder="Enter area (e.g. Rohini)"
+              value={formData.area}
+              onChange={handleChange}
+            />
           </div>
         </div>
 
@@ -178,9 +222,11 @@ export default function AddBook() {
         >
           {gettingLocation ? "Getting..." : "📍 Use Current Location"}
         </button>
+
         <label>Your Name</label>
         <input
           name="sellerName"
+          placeholder="Enter your name"
           value={formData.sellerName}
           onChange={handleChange}
         />
@@ -188,6 +234,7 @@ export default function AddBook() {
         <label>Phone</label>
         <input
           name="sellerPhone"
+          placeholder="Enter phone number"
           value={formData.sellerPhone}
           onChange={handleChange}
         />
@@ -195,12 +242,12 @@ export default function AddBook() {
         <label>Email</label>
         <input
           name="sellerEmail"
+          placeholder="Enter email (optional)"
           value={formData.sellerEmail}
           onChange={handleChange}
         />
 
-        {/* Image Upload */}
-        <label>Upload Image</label>
+        <label>Upload Image (optional)</label>
         <input type="file" accept="image/*" onChange={handleImageUpload} />
 
         {uploading && <p>Uploading...</p>}

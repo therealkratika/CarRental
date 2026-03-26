@@ -58,21 +58,19 @@ const bookSchema = new mongoose.Schema(
       enum: ["available", "sold", "rented"],
       default: "available",
     },
-
-    // 📍 GEO LOCATION (IMPORTANT 🔥)
-    location: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        default: "Point",
-      },
-      coordinates: {
-        type: [Number], 
-        required: true,
-      },
-      city: String,
-      area: String,
-    },
+location: {
+  type: {
+    type: String,
+    enum: ["Point"],
+    default: "Point",
+  },
+  coordinates: {
+    type: [Number],
+    default: undefined, 
+  },
+  city: String,
+  area: String,
+},
 
     owner: {
       type: mongoose.Schema.Types.ObjectId,

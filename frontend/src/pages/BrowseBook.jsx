@@ -29,7 +29,7 @@ export default function BrowseBooks() {
       setNearbyLoading(true);
 
       const loc = await AppSDK.getCurrentLocation();
-      const data = await AppSDK.getNearbyBooks(loc.lat, loc.lng);
+      const data = await BookSDK.getNearby(loc.lat, loc.lng);
 
       setBooks(data);
     } catch (err) {

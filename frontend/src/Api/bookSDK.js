@@ -11,7 +11,6 @@ export const BookSDK = {
     }
   },
 
-  // ➕ Add book (protected)
   create: async (data) => {
     try {
       const response = await api.post("/books", data);

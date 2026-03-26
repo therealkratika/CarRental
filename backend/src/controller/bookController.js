@@ -39,16 +39,18 @@ export const addBook = async (req, res) => {
       rentPricePerDay,
       image,
 
-      location: {
+      location:
+  coordinates && coordinates.length === 2
+    ? {
         type: "Point",
         coordinates: [
-          coordinates.lng, 
-          coordinates.lat,
+          Number(coordinates[0]),
+          Number(coordinates[1]),
         ],
         city,
         area,
-      },
-
+      }
+    : null, // ✅ IMPORTANT
       contact: {
         name,
         phone,
@@ -159,17 +161,20 @@ export const getNearbyBooks = async (req, res) => {
     }
 
     const books = await Book.find({
-      status: "available",
-      location: {
-        $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: [parseFloat(lng), parseFloat(lat)],
-          },
-          $maxDistance: parseInt(distance),
-        },
+  status: "available",
+  location: { $ne: null }, 
+  "location.coordinates": { $exists: true }, 
+
+  location: {
+    $near: {
+      $geometry: {
+        type: "Point",
+        coordinates: [Number(lng), Number(lat)],
       },
-    }).populate("owner", "name phone email");
+      $maxDistance: parseInt(distance),
+    },
+  },
+}).populate("owner", "name phone email");
 
     res.json(books);
 

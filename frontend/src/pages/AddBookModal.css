@@ -17,6 +17,7 @@
 .form input {
   padding: 10px;
   border: 1px solid #ddd;
+  color: black;
   border-radius: 8px;
 }
 
@@ -72,4 +73,8 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+}
+.form input::placeholder {
+  color: #aaa;
+  font-size: 13px;
 }
