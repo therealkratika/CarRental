@@ -11,7 +11,7 @@ export default function AddBook() {
     type: "sell",
     city: "",
     area: "",
-    coordinates: { lat: null, lng: null }, // ✅ FIXED
+    coordinates: { lat: null, lng: null },
     image: "",
     sellerName: "",
     sellerPhone: "",
@@ -22,35 +22,38 @@ export default function AddBook() {
   const [gettingLocation, setGettingLocation] = useState(false);
   const [uploading, setUploading] = useState(false);
 
+  // ✅ Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 📍 LOCATION
+  // ✅ Get current location (FIXED)
   const handleUseCurrentLocation = async () => {
     try {
       setGettingLocation(true);
 
       const loc = await AppSDK.getCurrentLocation();
+      console.log("LOCATION:", loc);
 
       setFormData((prev) => ({
         ...prev,
-        city: loc.city,
-        area: loc.area,
         coordinates: {
           lat: Number(loc.lat),
           lng: Number(loc.lng),
         },
       }));
 
+      alert("Location captured successfully 📍");
+
     } catch (err) {
+      console.error(err);
       alert(err?.message || "Location error");
     } finally {
       setGettingLocation(false);
     }
   };
 
-  // ☁️ IMAGE UPLOAD
+  // ✅ Upload image
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -72,19 +75,24 @@ export default function AddBook() {
     }
   };
 
-  // 📚 SUBMIT
+  // ✅ Submit form (FIXED)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // ✅ Validation (FIXED)
     if (
       !formData.title ||
       !formData.author ||
       !formData.price ||
-      !formData.city ||
       !formData.sellerName ||
       !formData.sellerPhone
     ) {
       return alert("Please fill all required fields");
+    }
+
+    // ✅ Ensure location exists
+    if (!formData.coordinates?.lat || !formData.coordinates?.lng) {
+      return alert("Please use current location 📍");
     }
 
     try {
@@ -93,25 +101,31 @@ export default function AddBook() {
       const payload = {
         title: formData.title,
         author: formData.author,
+
         isForSale: formData.type === "sell",
         isForRent: formData.type === "rent",
-        salePrice: formData.type === "sell" ? Number(formData.price) : undefined,
-        rentPricePerDay: formData.type === "rent" ? Number(formData.price) : undefined,
-        image: formData.image,
 
-        city: formData.city,
-        area: formData.area,
-
-        // ✅ SAFE GEO FIX
-        coordinates:
-          formData.coordinates?.lat != null &&
-          formData.coordinates?.lng != null
-            ? [
-                Number(formData.coordinates.lng), // lng FIRST
-                Number(formData.coordinates.lat),
-              ]
+        salePrice:
+          formData.type === "sell"
+            ? Number(formData.price)
             : undefined,
 
+        rentPricePerDay:
+          formData.type === "rent"
+            ? Number(formData.price)
+            : undefined,
+
+        image: formData.image,
+
+        // ✅ location
+        city: formData.city,
+        area: formData.area,
+        coordinates: {
+          lat: Number(formData.coordinates.lat),
+          lng: Number(formData.coordinates.lng),
+        },
+
+        // ✅ contact
         name: formData.sellerName,
         phone: formData.sellerPhone,
         email: formData.sellerEmail,
@@ -119,9 +133,9 @@ export default function AddBook() {
 
       await BookSDK.create(payload);
 
-      alert("Book added successfully 📚");
+      alert("Book added successfully 🎉");
 
-      // RESET
+      // ✅ Reset form
       setFormData({
         title: "",
         author: "",
@@ -137,6 +151,7 @@ export default function AddBook() {
       });
 
     } catch (err) {
+      console.error(err);
       alert(err?.message || "Error adding book");
     } finally {
       setLoading(false);
@@ -195,20 +210,20 @@ export default function AddBook() {
 
         <div className="row">
           <div>
-            <label>City</label>
+            <label>City (optional)</label>
             <input
               name="city"
-              placeholder="Enter city (e.g. Delhi)"
+              placeholder="Enter city"
               value={formData.city}
               onChange={handleChange}
             />
           </div>
 
           <div>
-            <label>Area</label>
+            <label>Area (optional)</label>
             <input
               name="area"
-              placeholder="Enter area (e.g. Rohini)"
+              placeholder="Enter area"
               value={formData.area}
               onChange={handleChange}
             />
@@ -239,10 +254,10 @@ export default function AddBook() {
           onChange={handleChange}
         />
 
-        <label>Email</label>
+        <label>Email (optional)</label>
         <input
           name="sellerEmail"
-          placeholder="Enter email (optional)"
+          placeholder="Enter email"
           value={formData.sellerEmail}
           onChange={handleChange}
         />

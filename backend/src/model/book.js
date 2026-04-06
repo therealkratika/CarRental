@@ -1,85 +1,53 @@
 import mongoose from "mongoose";
 
-const bookSchema = new mongoose.Schema(
-  {
-    title: {
+const bookSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  description: String,
+  category: String,
+  condition: String,
+
+  isForSale: Boolean,
+  isForRent: Boolean,
+
+  salePrice: Number,
+  rentPricePerDay: Number,
+
+  image: String,
+
+  // ✅ GEO LOCATION
+  location: {
+    type: {
       type: String,
-      required: true,
-      trim: true,
+      enum: ["Point"],
+      default: "Point",
     },
-
-    author: {
-      type: String,
-      required: true,
+    coordinates: {
+      type: [Number], // [lng, lat]
     },
+    city: String,
+    area: String,
+  },
 
-    description: String,
+  contact: {
+    name: String,
+    phone: String,
+    email: String,
+  },
 
-    images: [
-      {
-        type: String, // Cloudinary URLs
-      },
-    ],
-
-    category: {
-      type: String,
-      enum: ["academic", "fiction", "non-fiction", "other"],
-      default: "other",
-    },
-
-    condition: {
-      type: String,
-      enum: ["new", "good", "old"],
-      default: "good",
-    },
-
-    // 🔥 BOTH rent & sell supported
-    isForSale: {
-      type: Boolean,
-      default: false,
-    },
-
-    isForRent: {
-      type: Boolean,
-      default: false,
-    },
-
-    salePrice: {
-      type: Number,
-    },
-
-    rentPricePerDay: {
-      type: Number,
-    },
-
-    // Availability tracking
-    status: {
-      type: String,
-      enum: ["available", "sold", "rented"],
-      default: "available",
-    },
-location: {
-  type: {
+  status: {
     type: String,
-    enum: ["Point"],
-    default: "Point",
+    default: "available",
   },
-  coordinates: {
-    type: [Number],
-    default: undefined, 
-  },
-  city: String,
-  area: String,
-},
 
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+  rentedForDays: Number,
+
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
-  { timestamps: true }
-);
+});
+
 bookSchema.index({ location: "2dsphere" });
 
 export default mongoose.model("Book", bookSchema);

@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { BookSDK } from "../Api/bookSDK";
-import {AppSDK} from '../Api/appSdk'
+import { AppSDK } from "../Api/appSdk";
 import "./BrowseBook.css";
+import BookDetailModal from "../components/bookDetailsModal.jsx";
 
 export default function BrowseBooks() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nearbyLoading, setNearbyLoading] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
   const [search, setSearch] = useState("");
+
   const fetchBooks = async () => {
     try {
       setLoading(true);
       const data = await BookSDK.getAll();
       setBooks(data);
-    } catch (err){
-      alert(err);
+    } catch (err) {
+      alert(err?.message || "Error fetching books");
     } finally {
       setLoading(false);
     }
@@ -25,37 +28,29 @@ export default function BrowseBooks() {
   }, []);
 
   const handleNearby = async () => {
-    try {
-      setNearbyLoading(true);
+  try {
+    setNearbyLoading(true);
 
-      const loc = await AppSDK.getCurrentLocation();
-      const data = await BookSDK.getNearby(loc.lat, loc.lng);
+    const loc = await AppSDK.getCurrentLocation();
+    console.log("LOCATION:", loc);
 
-      setBooks(data);
-    } catch (err) {
-      alert(err);
-    } finally {
-      setNearbyLoading(false);
+    if (!loc?.lat || !loc?.lng) {
+      throw new Error("Invalid location");
     }
-  };
-  const handleAction = async (id, action) => {
-    try {
-      let days = 1;
 
-      if (action === "rent") {
-        const input = prompt("Enter number of days:");
-        days = Number(input);
-        if (!days || days <= 0) return;
-      }
+    const data = await BookSDK.getNearby(loc.lat, loc.lng);
+    console.log("NEARBY BOOKS:", data);
 
-      await BookSDK.handleAction(id, action, days);
+    setBooks(data);
 
-      alert("Success!");
-      fetchBooks();
-    } catch (err) {
-      alert(err);
-    }
-  };
+  } catch (err) {
+    console.error(err);
+    alert(err?.message || "Location error");
+  } finally {
+    setNearbyLoading(false);
+  }
+};
+
   const filteredBooks = books.filter((book) =>
     (book.title + book.author)
       .toLowerCase()
@@ -67,9 +62,8 @@ export default function BrowseBooks() {
   return (
     <div className="dashboard-layout">
       <div className="main-content">
-
         <div className="top-bar">
-          <h2>Browse Books </h2>
+          <h2>Browse Books</h2>
 
           <div className="top-actions">
             <input
@@ -81,41 +75,46 @@ export default function BrowseBooks() {
             />
 
             <button className="nearby-btn" onClick={handleNearby}>
-              {nearbyLoading ? "Finding..." : "Near Me"}
+              {nearbyLoading ? "Finding..." : "📍 Near Me"}
             </button>
           </div>
         </div>
-
         {filteredBooks.length === 0 ? (
           <p className="empty">No books available</p>
         ) : (
           <div className="books-grid">
 
             {filteredBooks.map((book) => (
-              <div key={book._id} className="book-card">
-
-                {book.image && (
-                  <img src={book.image} alt={book.title} />
-                )}
-
+              
+              <div
+                key={book._id}
+                className="book-card"
+              >
+                <img
+                  src={
+                    book.image || "https://dummyimage.com/200x250/cccccc/000000&text=No+Image"
+                  }
+                  alt={book.title}
+                />
+                
                 <div className="card-body">
                   <h3>{book.title}</h3>
                   <p className="author">{book.author}</p>
-
                   <p className="price">
                     {book.isForSale && `₹${book.salePrice}`}
                     {book.isForRent && `₹${book.rentPricePerDay}/day`}
                   </p>
-
                   <p className="location">
-                    📍 {book.location?.city || "N/A"}, {book.location?.area || ""}
-                  </p>
-
+  📍 {book.location?.city
+    ? `${book.location.city}, ${book.location.area || ""}`
+    : "Location not available"}
+</p>
                   <div className="actions">
+
                     {book.isForSale && (
                       <button
                         className="buy-btn"
-                        onClick={() => handleAction(book._id, "buy")}
+                        onClick={() => setSelectedBook(book)}
                       >
                         Buy
                       </button>
@@ -124,14 +123,14 @@ export default function BrowseBooks() {
                     {book.isForRent && (
                       <button
                         className="rent-btn"
-                        onClick={() => handleAction(book._id, "rent")}
+                        onClick={() => setSelectedBook(book)}
                       >
                         Rent
                       </button>
                     )}
+
                   </div>
                 </div>
-
               </div>
             ))}
 
@@ -139,6 +138,11 @@ export default function BrowseBooks() {
         )}
 
       </div>
+      <BookDetailModal
+        book={selectedBook}
+        onClose={() => setSelectedBook(null)}
+        onActionSuccess={fetchBooks}
+      />
     </div>
   );
 }

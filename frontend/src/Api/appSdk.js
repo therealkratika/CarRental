@@ -1,49 +1,24 @@
 import api from "./Axios";
 
 export const AppSDK = {
+  // ✅ Get user location (FAST + RELIABLE)
   getCurrentLocation: () => {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject("Geolocation not supported");
+        reject(new Error("Geolocation not supported"));
         return;
       }
 
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-
-          try {
-            const res = await fetch(
-              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-            );
-
-            const data = await res.json();
-
-            const city =
-              data.address.city ||
-              data.address.town ||
-              data.address.village ||
-              "";
-
-            const area =
-              data.address.suburb ||
-              data.address.neighbourhood ||
-              data.address.state_district ||
-              "";
-
-            resolve({
-              lat,
-              lng,
-              city,
-              area,
-            });
-
-          } catch (error) {
-            reject(error);
-          }
+        (position) => {
+          resolve({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
         },
-        () => reject("Location permission denied")
+        (error) => {
+          reject(new Error(error.message || "Location permission denied"));
+        }
       );
     });
   },
@@ -64,4 +39,4 @@ export const AppSDK = {
       throw error.response?.data || error.message;
     }
   }
-}
+};
