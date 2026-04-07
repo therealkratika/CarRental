@@ -1,132 +1,147 @@
-/* Wrapper */
+/* WRAPPER */
 .auth-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #f75050 0%, #fcf5f5 100%);  padding: 20px;
+  background: linear-gradient(to right, #ede9fe, #ffffff);
+  padding: 20px;
 }
 
-/* Card */
-.auth-card {
-  position: relative;
-  z-index: 1; /* 🔥 above background text */
-
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(25px);
-  padding: 40px;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-}
+/* CARD */
+.auth-card,
 .auth-wrapper > div {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
+  background: white;
   padding: 40px;
   border-radius: 16px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15);
+  border: 1px solid #eee;
 }
 
-/* Header */
+/* HEADER */
 .header h2 {
-  color: #fff;
+  color: #111;
   text-align: center;
   margin-bottom: 25px;
   font-weight: 700;
 }
 
-/* Form */
-.auth-form {
+/* FORM */
+.auth-form,
+.forgot-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* Fields */
-.details,
-.field {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Labels */
+/* LABEL */
 label {
-  color: #fff;
+  color: #333;
   font-size: 14px;
   margin-bottom: 5px;
 }
 
-/* Inputs */
+/* INPUT */
 input {
   padding: 12px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #ddd;
   outline: none;
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  background: #fafafa;
+  color: #111;
   font-size: 14px;
   transition: 0.3s;
 }
 
-/* Input focus */
+/* INPUT FOCUS */
 input:focus {
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid #fff;
+  border-color: #7c3aed;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
 }
 
-/* Button */
+/* BUTTON */
 .primary-btn {
   margin-top: 10px;
   padding: 12px;
   border: none;
   border-radius: 25px;
-  background: #ff3b3b;
+  background: #7c3aed;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
 }
 
-/* Button hover */
+/* BUTTON HOVER */
 .primary-btn:hover {
-  background: #ff1f1f;
-  transform: scale(1.03);
+  background: #6d28d9;
+  transform: translateY(-1px);
 }
 
-/* Disabled button */
+/* DISABLED */
 .primary-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* Errors */
+/* ERROR */
 .error,
 .auth-error {
-  color: #ffdede;
+  color: #ff4d4f;
   font-size: 12px;
-  margin-top: 4px;
 }
 
-/* Switch text */
+/* SUCCESS MESSAGE */
+.message {
+  margin-top: 10px;
+  font-size: 13px;
+  text-align: center;
+  color: #22c55e;
+}
+
+.message.error {
+  color: #ff4d4f;
+}
+
+/* SWITCH TEXT */
 .switch-text {
   margin-top: 15px;
   text-align: center;
-  color: #fff;
+  color: #555;
 }
 
 .switch-text a {
-  color: #fff;
+  color: #7c3aed;
   font-weight: bold;
+  text-decoration: none;
+}
+
+.switch-text a:hover {
   text-decoration: underline;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
+/* FORGOT LINK */
+.forgot-link {
+  text-align: right;
+  font-size: 13px;
+  color: #7c3aed;
+  cursor: pointer;
+  margin-top: -5px;
+  margin-bottom: 5px;
+  opacity: 0.8;
+}
 
-/* Tablet */
+.forgot-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
+  .auth-card,
   .auth-wrapper > div {
     padding: 30px;
   }
@@ -136,12 +151,12 @@ input:focus {
   }
 }
 
-/* Mobile */
 @media (max-width: 480px) {
   .auth-wrapper {
     padding: 10px;
   }
 
+  .auth-card,
   .auth-wrapper > div {
     padding: 20px;
   }
@@ -154,69 +169,4 @@ input:focus {
   .primary-btn {
     padding: 10px;
   }
-}
-.forgot-link {
-  text-align: right;
-  font-size: 13px;
-  color: #fff;
-  cursor: pointer;
-  margin-top: -5px;
-  margin-bottom: 5px;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-
-.forgot-link:hover {
-  opacity: 1;
-  text-decoration: underline;
-}
-/* Reuse auth-wrapper, auth-card, background-text from previous CSS */
-
-/* Forgot form */
-.forgot-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* Heading */
-.forgot-form h2 {
-  text-align: center;
-  color: #fff;
-  margin-bottom: 10px;
-}
-
-/* Input */
-.forgot-form input {
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-
-  transition: 0.3s;
-}
-
-/* Input focus */
-.forgot-form input:focus {
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid #fff;
-}
-
-/* Message */
-.message {
-  margin-top: 10px;
-  font-size: 13px;
-  text-align: center;
-  color: #fff;
-  opacity: 0.9;
-}
-.message {
-  color: #d4ffd4; /* success */
-}
-
-.message.error {
-  color: #ffdede; /* error */
 }

@@ -12,8 +12,6 @@ import AddBook from "./pages/AddBook";
 // Layout
 import Sidebar from "./components/Sidebar";
 import "./App.css";
-
-// 🔐 Optional Protected Route (Firebase check)
 const ProtectedRoute = ({ children }) => {
   const user = localStorage.getItem("user"); // or Firebase check
 
@@ -24,7 +22,6 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// 📦 Dashboard Layout
 const DashboardLayout = () => {
   return (
     <div className="dashboard-layout">
@@ -48,14 +45,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* 🌐 Public Routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-
-        {/* 📊 Dashboard */}
         <Route
           path="/dashboard/*"
           element={

@@ -1,171 +1,234 @@
-/* 1. Main Container Setup */
+/* GLOBAL */
 .landing {
-  position: relative;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #f75050 0%, #fcf5f5 100%);
-  overflow: hidden; /* Keeps the giant text from causing horizontal scroll */
-  padding: 0 5%;
-  font-family: 'Inter', sans-serif;
-}
-.Navbar{
-    position: relative;
-    padding: 0%;
-    margin: 0%;
-}
-.background-text {
- position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  font-size: 20vw; /* Scales with screen width */
-  font-weight: 900;
-  font-family: 'Arial Black', sans-serif;
-  z-index: 1;
-  
-  /* The "ghost" effect */
-  color: rgba(0, 0, 0, 0.03); /* Very light grey/black */
- 
-     -webkit-text-stroke: 2px rgba(0,0,0,0.05);
-     color: transparent; 
-  
-  pointer-events: none; /* So users can click through it */
-  white-space: nowrap;
+  font-family: "Segoe UI", sans-serif;
+  background: #f8fafc;
 }
 
-/* 3. The Central Car Image */
-.car-image {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2; /* Sits on top of background-text */
-  width: 40%;
-  max-width: 900px;
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
 }
 
-.car-image img {
-  width: 100%;
-  height: auto;
-  display: block;
+/* HERO */
+.hero {
+  background: linear-gradient(to right, #ede9fe, #ffffff);
+  padding: 70px 0;
 }
 
-.right {
-  position: relative;
-  z-index: 3;
-  margin-top: 100px;
-  max-width: 400px;
-}
-
-.right-text h1 {
-  font-size: 3.5rem;
-  line-height: 1;
-  margin: 0;
-  font-weight: 800;
-  color: #1a1a1a;
-}
-
-.right-explain p {
-  color: #666;
-  margin: 20px 0;
-  font-size: 1.1rem;
-}
-
-.explore {
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 15px 35px;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  z-index: 4;
-  position: relative;
-}
-
-.explore:hover {
-  transform: scale(1.05);
-  background: #e63939;
-}
-
-/* Specific styling for your 'left' container to position it */
-.left {
-  position: absolute;
-  bottom: 8%;
-  right: 5%;
-  z-index: 10;
-  max-width: 350px;
-  text-align: right;
-}
-
-.left-text h2 {
-  font-size: 1.5rem;
-  margin-bottom: 5px;
-}
-
-.left-text p {
-  font-size: 0.9rem;
-  color: #777;
-}
-
-.left-button {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.left-button button {
-  background: #eee;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.left-button-group {
+.hero-grid {
   display: grid;
-  grid-template-columns: auto auto auto; /* Creates two columns */
-  gap: 12px; /* Space between buttons */
-  justify-content: flex-end; /* Aligns buttons to the right to match your layout */
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.hero-left h1 {
+  font-size: 48px;
+  margin: 10px 0;
+}
+
+.hero-left h1 span {
+  color: #7c3aed;
+}
+
+.hero-left p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.badge {
+  background: #ddd6fe;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.3s;
+}
+
+.primary {
+  background: #7c3aed;
+  color: white;
+}
+
+.primary:hover {
+  background: #6d28d9;
+}
+
+.secondary {
+  border: 1px solid #7c3aed;
+  color: #7c3aed;
+}
+
+.secondary:hover {
+  background: #ede9fe;
+}
+
+.white {
+  background: white;
+  color: #7c3aed;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  gap: 30px;
   margin-top: 20px;
 }
 
-.action-btn {
-  /* Shape and Border */
-  background: transparent;
-  border: 1.5px solid #ff4d4d; /* Thin red border */
-  border-radius: 50px; /* Makes it a pill shape */
-  
-  /* Text Styling */
-  color: #ff4d4d;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 10px 30px;
-  min-width: 100px;
-  
-  /* Smooth Transition */
-  cursor: pointer;
-  transition: all 0.3s ease;
-  outline: none;
+.stats h3 {
+  margin: 0;
 }
 
-/* Hover State */
-.action-btn:hover {
-  background-color: #ff4d4d; /* Background turns red */
-  color: #ffffff; /* Text turns white */
-  transform: translateY(-2px); /* Optional: subtle lift effect */
-  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2); /* Soft glow */
+/* IMAGE */
+.hero-right img {
+  width: 100%;
+  border-radius: 15px;
 }
 
+/* FEATURES */
+.features {
+  padding: 70px 0;
+  text-align: center;
+}
 
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
 
-/* 7. Responsiveness */
-@media (max-width: 768px) {
-  .right-text h1 { font-size: 2.5rem; }
-  .background-text { font-size: 30vw; top: 30%; }
-  .car-image { width: 90%; }
-  .left { position: relative; margin-top: 300px; right: 0; text-align: left; }
-  .left-button { justify-content: flex-start; }
+.feature-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+/* CATEGORIES */
+.categories {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+}
+
+.category-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
+  transition: 0.3s;
+}
+
+.category-card:hover {
+  background: #ede9fe;
+}
+
+/* BOOKS */
+.featured {
+  padding: 70px 0;
+}
+
+.featured-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.book-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.book-info {
+  padding: 15px;
+}
+
+.author {
+  font-size: 14px;
+  color: gray;
+}
+
+.price {
+  color: #7c3aed;
+  font-weight: bold;
+}
+
+.view-btn {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: white;
+  background: #7c3aed;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* CTA */
+.cta {
+  background: linear-gradient(to right, #7c3aed, #a78bfa);
+  color: white;
+  text-align: center;
+  padding: 70px 20px;
+}
+
+/* LOADING */
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .book-grid {
+    grid-template-columns: 1fr;
+  }
 }
