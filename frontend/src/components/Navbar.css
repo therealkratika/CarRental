@@ -1,76 +1,126 @@
-/* Container styling to space items out */
-.Wrapper {
+/* NAVBAR */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+/* CONTAINER */
+.nav-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 12px 20px;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
-  background-color: transparent;
-  position: relative;
-  color: rgb(7, 7, 7);
-  font-family: sans-serif;
+  justify-content: space-between;
 }
 
-.Title {
-  font-size: 2rem;
-  font-weight: 1000;
-  letter-spacing: 2px;
-  position: relative;
-  z-index: 1;
-}
-
-/* List Styling */
-.list ul {
+/* LEFT */
+.nav-left {
   display: flex;
-  list-style: none;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
+  align-items: center;
 }
 
-.list li {
-  cursor: pointer;
-  position: relative;
-  padding: 5px 0;
-}
-
-/* The underline hover effect */
-.list li::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: #131010; /* Red underline */
-  transition: width 0.3s ease;
-}
-
-.list li:hover::after {
-  width: 100%;
-}
-
-/* Button Container */
-.button {
+/* CENTER */
+.nav-center {
+  flex: 1;
   display: flex;
-  gap: 15px;
+  justify-content: center;
 }
 
-/* Shared Button Styles */
-.login, .signup {
-  background: transparent;
-  color: rgb(12, 9, 9);
-  border: 2px solid transparent;
-  padding: 8px 20px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border-radius: 50px; /* This creates the oval shape */
+/* RIGHT */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
-/* Red Oval Hover Effect */
-.login:hover, .signup:hover {
-  background-color: #090606;
-  border-color: #090606;
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-box {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(to right, #7c3aed, #a78bfa);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); /* Optional glow */
+}
+
+.logo-text span {
+  font-weight: bold;
+  color: #7c3aed;
+}
+
+.logo-text p {
+  font-size: 11px;
+  margin: 0;
+  color: #888;
+}
+
+/* SEARCH */
+.search-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-form input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: #f3f4f6;
+}
+
+.search-form input:focus {
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+}
+
+/* RIGHT LINKS */
+.nav-right a {
+  text-decoration: none;
+  color: #444;
+  font-weight: 500;
+}
+
+.nav-right a:hover {
+  color: #7c3aed;
+}
+
+/* ICON */
+.icon {
+  font-size: 18px;
+  position: relative;
+}
+
+/* BADGE */
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #7c3aed;
+  color: white;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 50%;
+}
+
+/* LOGIN BUTTON */
+.login-btn {
+  background: linear-gradient(to right, #7c3aed, #a78bfa);
+  color: white !important;
+  padding: 8px 16px;
+  border-radius: 10px;
 }

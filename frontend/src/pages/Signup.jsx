@@ -30,14 +30,14 @@ export default function Signup() {
           <h2>Create your account to start</h2>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='auth-form'>
-          <div className='details'>
+          <div className='field'>
             <label>Username</label>
             <input type = "text"
             {...register('username',{required: 'Username is required',})}
             />
             {errors.username && <p className='error'>{errors.username.message}</p>}
           </div>
-          <div className='details'>
+          <div className='field'>
             <label>Email</label>
             <input type ="email"
              {...register("email",{
@@ -50,7 +50,7 @@ export default function Signup() {
             />
             {errors.email && <p className='error'>{errors.email.message}</p>}
           </div>
-          <div className='details'>
+          <div className='field'>
             <label>Password</label>
              <input
               type="password"

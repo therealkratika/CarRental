@@ -7,11 +7,10 @@ export default function Landing() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch books from your API
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const res = await BookSDK.getAllBooks(); // 🔁 adjust if name differs
+        const res = await BookSDK.getAllBooks();
         setBooks(res || []);
       } catch (err) {
         console.error("Error fetching books:", err);

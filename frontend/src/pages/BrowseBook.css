@@ -99,7 +99,6 @@ body {
   object-fit: cover;
 }
 
-/* BODY */
 .card-body {
   padding: 14px;
 }
@@ -109,7 +108,6 @@ body {
   font-size: 16px;
 }
 
-/* TEXT */
 .author {
   color: #666;
   font-size: 13px;
@@ -126,14 +124,12 @@ body {
   color: #888;
 }
 
-/* ACTIONS */
 .actions {
   display: flex;
   gap: 8px;
   margin-top: 10px;
 }
 
-/* BUTTONS */
 .buy-btn {
   flex: 1;
   background: #7c3aed;
@@ -163,15 +159,12 @@ body {
   background: #ddd6fe;
 }
 
-/* STATES */
 .loading,
 .empty {
   text-align: center;
   margin-top: 40px;
   color: #666;
 }
-
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .dashboard-layout {
     flex-direction: column;

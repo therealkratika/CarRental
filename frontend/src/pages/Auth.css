@@ -13,10 +13,10 @@
 .auth-wrapper > div {
   background: white;
   padding: 40px;
-  border-radius: 16px;
+  border-radius: 18px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.12);
   border: 1px solid #eee;
 }
 
@@ -26,6 +26,7 @@
   text-align: center;
   margin-bottom: 25px;
   font-weight: 700;
+  font-size: 22px;
 }
 
 /* FORM */
@@ -33,33 +34,42 @@
 .forgot-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
+}
+
+/* FIELD (IMPORTANT FIX) */
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 /* LABEL */
-label {
-  color: #333;
+.field label {
+  color: #444;
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+  font-weight: 500;
 }
 
 /* INPUT */
-input {
-  padding: 12px;
-  border-radius: 8px;
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
   border: 1px solid #ddd;
   outline: none;
-  background: #fafafa;
+  background: #f9fafb;
   color: #111;
   font-size: 14px;
-  transition: 0.3s;
+  transition: all 0.25s ease;
 }
 
 /* INPUT FOCUS */
-input:focus {
+.field input:focus {
   border-color: #7c3aed;
   background: #fff;
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
 }
 
 /* BUTTON */
@@ -68,17 +78,17 @@ input:focus {
   padding: 12px;
   border: none;
   border-radius: 25px;
-  background: #7c3aed;
+  background: linear-gradient(to right, #7c3aed, #a78bfa);
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.25s;
 }
 
 /* BUTTON HOVER */
 .primary-btn:hover {
-  background: #6d28d9;
   transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.25);
 }
 
 /* DISABLED */
@@ -92,6 +102,7 @@ input:focus {
 .auth-error {
   color: #ff4d4f;
   font-size: 12px;
+  margin-top: 4px;
 }
 
 /* SUCCESS MESSAGE */
@@ -111,11 +122,12 @@ input:focus {
   margin-top: 15px;
   text-align: center;
   color: #555;
+  font-size: 14px;
 }
 
 .switch-text a {
   color: #7c3aed;
-  font-weight: bold;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -161,7 +173,7 @@ input:focus {
     padding: 20px;
   }
 
-  input {
+  .field input {
     padding: 10px;
     font-size: 13px;
   }

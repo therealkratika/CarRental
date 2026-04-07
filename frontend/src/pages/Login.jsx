@@ -20,7 +20,7 @@ export default function Login(){
                     <h2>Welcome Back</h2>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
-                    <div className="details">
+                    <div className="field">
                         <label>Email</label>
                          <input
               type="email"
@@ -30,7 +30,7 @@ export default function Login(){
             </div>
                {errors.email && <p className="auth-error">{errors.email.message}</p>}
                     
-            <div className="details">
+            <div className="field">
             <label>Password</label>
             <input
               type="password"
