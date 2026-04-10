@@ -1,21 +1,12 @@
 import axios from "axios";
-import { auth } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
 
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
 });
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
 
-let currentUser = null;
-
-// 🔐 track user properly
-onAuthStateChanged(auth, (user) => {
-  currentUser = user;
-});
-
-api.interceptors.request.use(async (config) => {
-  if (currentUser) {
-    const token = await currentUser.getIdToken();
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 

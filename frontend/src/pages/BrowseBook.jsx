@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { BookSDK } from "../Api/bookSDK";
 import { AppSDK } from "../Api/appSdk";
-import "./BrowseBook.css";
+import BookCard from "../components/BookCard";
 import BookDetailModal from "../components/bookDetailsModal.jsx";
+import "./BrowseBook.css";
 
 export default function BrowseBooks() {
   const [books, setBooks] = useState([]);
@@ -10,14 +11,14 @@ export default function BrowseBooks() {
   const [nearbyLoading, setNearbyLoading] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [search, setSearch] = useState("");
-
   const fetchBooks = async () => {
     try {
       setLoading(true);
       const data = await BookSDK.getAll();
       setBooks(data);
     } catch (err) {
-      alert(err?.message || "Error fetching books");
+      console.error(err);
+      alert("Error fetching books");
     } finally {
       setLoading(false);
     }
@@ -26,38 +27,34 @@ export default function BrowseBooks() {
   useEffect(() => {
     fetchBooks();
   }, []);
-
   const handleNearby = async () => {
-  try {
-    setNearbyLoading(true);
+    try {
+      setNearbyLoading(true);
 
-    const loc = await AppSDK.getCurrentLocation();
-    console.log("LOCATION:", loc);
+      const loc = await AppSDK.getCurrentLocation();
 
-    if (!loc?.lat || !loc?.lng) {
-      throw new Error("Invalid location");
+      if (!loc?.lat || !loc?.lng) {
+        throw new Error("Invalid location");
+      }
+
+      const data = await BookSDK.getNearby(loc.lat, loc.lng);
+      setBooks(data);
+
+    } catch (err) {
+      console.error(err);
+      alert("Location error");
+    } finally {
+      setNearbyLoading(false);
     }
-
-    const data = await BookSDK.getNearby(loc.lat, loc.lng);
-    console.log("NEARBY BOOKS:", data);
-
-    setBooks(data);
-
-  } catch (err) {
-    console.error(err);
-    alert(err?.message || "Location error");
-  } finally {
-    setNearbyLoading(false);
-  }
-};
-
+  };
   const filteredBooks = books.filter((book) =>
     (book.title + book.author)
       .toLowerCase()
       .includes(search.toLowerCase())
   );
-
-  if (loading) return <p className="loading">Loading books...</p>;
+  if (loading) {
+    return <p className="loading">Loading books...</p>;
+  }
 
   return (
     <div className="dashboard-layout">
@@ -83,66 +80,23 @@ export default function BrowseBooks() {
           <p className="empty">No books available</p>
         ) : (
           <div className="books-grid">
-
             {filteredBooks.map((book) => (
-              
-              <div
+              <BookCard
                 key={book._id}
-                className="book-card"
-              >
-                <img
-                  src={
-                    book.image || "https://dummyimage.com/200x250/cccccc/000000&text=No+Image"
-                  }
-                  alt={book.title}
-                />
-                
-                <div className="card-body">
-                  <h3>{book.title}</h3>
-                  <p className="author">{book.author}</p>
-                  <p className="price">
-                    {book.isForSale && `₹${book.salePrice}`}
-                    {book.isForRent && `₹${book.rentPricePerDay}/day`}
-                  </p>
-                  <p className="location">
-  📍 {book.location?.city
-    ? `${book.location.city}, ${book.location.area || ""}`
-    : "Location not available"}
-</p>
-                  <div className="actions">
-
-                    {book.isForSale && (
-                      <button
-                        className="buy-btn"
-                        onClick={() => setSelectedBook(book)}
-                      >
-                        Buy
-                      </button>
-                    )}
-
-                    {book.isForRent && (
-                      <button
-                        className="rent-btn"
-                        onClick={() => setSelectedBook(book)}
-                      >
-                        Rent
-                      </button>
-                    )}
-
-                  </div>
-                </div>
-              </div>
+                book={book}
+                onSelect={setSelectedBook} 
+              />
             ))}
-
           </div>
         )}
 
       </div>
-      <BookDetailModal
-        book={selectedBook}
-        onClose={() => setSelectedBook(null)}
-        onActionSuccess={fetchBooks}
-      />
+      {selectedBook && (
+        <BookDetailModal
+          book={selectedBook}
+          onClose={() => setSelectedBook(null)}
+        />
+      )}
     </div>
   );
 }

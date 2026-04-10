@@ -10,7 +10,7 @@ export default function Landing() {
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const res = await BookSDK.getAllBooks();
+        const res = await BookSDK.getAll();
         setBooks(res || []);
       } catch (err) {
         console.error("Error fetching books:", err);
@@ -72,8 +72,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      {/* FEATURES */}
       <section className="features">
         <div className="container">
           <h2>Why Choose Us?</h2>
@@ -101,8 +99,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      {/* CATEGORIES */}
       <section className="categories">
         <div className="container">
           <h2>Browse Categories</h2>
@@ -125,7 +121,8 @@ export default function Landing() {
         <div className="container">
           <div className="featured-header">
             <h2>Featured Books</h2>
-            <Link to="/books">View All →</Link>
+
+            <Link to="/dashboard">View All →</Link>
           </div>
 
           {loading ? (
@@ -154,12 +151,9 @@ export default function Landing() {
           )}
         </div>
       </section>
-
-      {/* CTA */}
       <section className="cta">
         <h2>Have Books You Don’t Need?</h2>
         <p>Sell them and earn instantly.</p>
-
         <Link to="/add-book" className="btn white">
           Start Selling →
         </Link>

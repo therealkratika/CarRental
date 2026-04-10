@@ -8,7 +8,7 @@ import ForgotPassword from "./pages/forgotPassword";
 import BrowseBooks from "./pages/BrowseBook";
 import MyBooks from "./pages/MyBook";
 import AddBook from "./pages/AddBook";
-
+import ProfilePage from "./pages/ProfilePage";
 // Components
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -37,6 +37,8 @@ const DashboardLayout = () => {
           <Route path="browse" element={<BrowseBooks />} />
           <Route path="my-books" element={<MyBooks />} />
           <Route path="add-book" element={<AddBook />} />
+          <Route path="profile" element={<ProfilePage />} />
+
 
           <Route path="*" element={<Navigate to="browse" />} />
         </Routes>

@@ -1,14 +1,8 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
-    // 🔐 Firebase UID (IMPORTANT)
-    firebaseUid: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-
     name: {
       type: String,
       required: true,
@@ -20,47 +14,39 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
     },
 
-    // 📞 Contact (very important for your app)
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
+
     phone: {
       type: String,
-      default: "",
+      required: true,
     },
 
-    avatar: {
-      type: String, // profile image (Firebase / Cloudinary)
-      default: "",
-    },
-
-    // 📍 Default user location
-    location: {
-      city: {
-        type: String,
-        default: "",
-      },
-      area: {
-        type: String,
-        default: "",
-      },
-    },
-
-    // ⭐ Ratings (future feature)
-    rating: {
-      type: Number,
-      default: 0,
-    },
-
-    totalReviews: {
-      type: Number,
-      default: 0,
-    },
-    isSeller: {
-      type: Boolean,
-      default: false,
-    },
+    // optional profile fields
+    city: String,
+    avatar: String,
   },
   { timestamps: true }
 );
+
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+
+  next();
+});
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 
 export default mongoose.model("User", userSchema);

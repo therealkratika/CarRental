@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AppSDK } from "../Api/appSdk";
-import "./AddBookModal.css";
 import { BookSDK } from "../Api/bookSDK";
+import "./AddBook.css";
 
 export default function AddBook() {
   const [formData, setFormData] = useState({
@@ -22,18 +22,15 @@ export default function AddBook() {
   const [gettingLocation, setGettingLocation] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // ✅ Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Get current location (FIXED)
   const handleUseCurrentLocation = async () => {
     try {
       setGettingLocation(true);
 
       const loc = await AppSDK.getCurrentLocation();
-      console.log("LOCATION:", loc);
 
       setFormData((prev) => ({
         ...prev,
@@ -43,43 +40,36 @@ export default function AddBook() {
         },
       }));
 
-      alert("Location captured successfully 📍");
-
+      alert("Location captured 📍");
     } catch (err) {
-      console.error(err);
       alert(err?.message || "Location error");
     } finally {
       setGettingLocation(false);
     }
   };
 
-  // ✅ Upload image
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     try {
       setUploading(true);
-
       const url = await AppSDK.uploadImage(file);
 
       setFormData((prev) => ({
         ...prev,
         image: url,
       }));
-
     } catch (err) {
-      alert(err?.message || "Upload failed");
+      alert(err.message || "Image upload failed");
     } finally {
       setUploading(false);
     }
   };
 
-  // ✅ Submit form (FIXED)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Validation (FIXED)
     if (
       !formData.title ||
       !formData.author ||
@@ -87,12 +77,11 @@ export default function AddBook() {
       !formData.sellerName ||
       !formData.sellerPhone
     ) {
-      return alert("Please fill all required fields");
+      return alert("Fill all required fields");
     }
 
-    // ✅ Ensure location exists
-    if (!formData.coordinates?.lat || !formData.coordinates?.lng) {
-      return alert("Please use current location 📍");
+    if (!formData.coordinates.lat) {
+      return alert("Please select location 📍");
     }
 
     try {
@@ -106,26 +95,17 @@ export default function AddBook() {
         isForRent: formData.type === "rent",
 
         salePrice:
-          formData.type === "sell"
-            ? Number(formData.price)
-            : undefined,
+          formData.type === "sell" ? Number(formData.price) : undefined,
 
         rentPricePerDay:
-          formData.type === "rent"
-            ? Number(formData.price)
-            : undefined,
+          formData.type === "rent" ? Number(formData.price) : undefined,
 
         image: formData.image,
-
-        // ✅ location
         city: formData.city,
         area: formData.area,
-        coordinates: {
-          lat: Number(formData.coordinates.lat),
-          lng: Number(formData.coordinates.lng),
-        },
 
-        // ✅ contact
+        coordinates: formData.coordinates,
+
         name: formData.sellerName,
         phone: formData.sellerPhone,
         email: formData.sellerEmail,
@@ -133,9 +113,9 @@ export default function AddBook() {
 
       await BookSDK.create(payload);
 
-      alert("Book added successfully 🎉");
+      alert("Book added 🎉");
 
-      // ✅ Reset form
+      // reset
       setFormData({
         title: "",
         author: "",
@@ -151,131 +131,123 @@ export default function AddBook() {
       });
 
     } catch (err) {
-      console.error(err);
-      alert(err?.message || "Error adding book");
+      alert(err?.message || "Error");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="addbook-container">
-      <h2>Add Book</h2>
+    <div className="addbook-page">
+      <div className="addbook-container">
+        <h1>Add Book</h1>
 
-      <form onSubmit={handleSubmit} className="form">
+        <form onSubmit={handleSubmit} className="form">
 
-        <label>Book Title</label>
-        <input
-          name="title"
-          placeholder="Enter book title"
-          value={formData.title}
-          onChange={handleChange}
-        />
+          {/* Title */}
+          <input
+            name="title"
+            placeholder="Book Title"
+            value={formData.title}
+            onChange={handleChange}
+          />
 
-        <label>Author</label>
-        <input
-          name="author"
-          placeholder="Enter author name"
-          value={formData.author}
-          onChange={handleChange}
-        />
+          {/* Author */}
+          <input
+            name="author"
+            placeholder="Author"
+            value={formData.author}
+            onChange={handleChange}
+          />
 
-        <label>Price</label>
-        <input
-          name="price"
-          type="number"
-          placeholder="Enter price (₹)"
-          value={formData.price}
-          onChange={handleChange}
-        />
+          {/* Price */}
+          <input
+            name="price"
+            type="number"
+            placeholder="Price ₹"
+            value={formData.price}
+            onChange={handleChange}
+          />
 
-        <label>Type</label>
-        <div className="toggle">
-          <button
-            type="button"
-            className={formData.type === "rent" ? "active" : ""}
-            onClick={() => setFormData({ ...formData, type: "rent" })}
-          >
-            For Rent
-          </button>
+          {/* Type */}
+          <div className="toggle">
+            <button
+              type="button"
+              className={formData.type === "rent" ? "active" : ""}
+              onClick={() => setFormData({ ...formData, type: "rent" })}
+            >
+              Rent
+            </button>
+            <button
+              type="button"
+              className={formData.type === "sell" ? "active" : ""}
+              onClick={() => setFormData({ ...formData, type: "sell" })}
+            >
+              Sell
+            </button>
+          </div>
 
-          <button
-            type="button"
-            className={formData.type === "sell" ? "active" : ""}
-            onClick={() => setFormData({ ...formData, type: "sell" })}
-          >
-            For Sale
-          </button>
-        </div>
-
-        <div className="row">
-          <div>
-            <label>City (optional)</label>
+          {/* Location */}
+          <div className="row">
             <input
               name="city"
-              placeholder="Enter city"
+              placeholder="City"
               value={formData.city}
               onChange={handleChange}
             />
-          </div>
-
-          <div>
-            <label>Area (optional)</label>
             <input
               name="area"
-              placeholder="Enter area"
+              placeholder="Area"
               value={formData.area}
               onChange={handleChange}
             />
           </div>
-        </div>
 
-        <button
-          type="button"
-          className="location-btn"
-          onClick={handleUseCurrentLocation}
-        >
-          {gettingLocation ? "Getting..." : "📍 Use Current Location"}
-        </button>
+          <button
+            type="button"
+            className="location-btn"
+            onClick={handleUseCurrentLocation}
+          >
+            {gettingLocation ? "Getting..." : "📍 Use Current Location"}
+          </button>
 
-        <label>Your Name</label>
-        <input
-          name="sellerName"
-          placeholder="Enter your name"
-          value={formData.sellerName}
-          onChange={handleChange}
-        />
+          {/* Seller */}
+          <input
+            name="sellerName"
+            placeholder="Your Name"
+            value={formData.sellerName}
+            onChange={handleChange}
+          />
 
-        <label>Phone</label>
-        <input
-          name="sellerPhone"
-          placeholder="Enter phone number"
-          value={formData.sellerPhone}
-          onChange={handleChange}
-        />
+          <input
+            name="sellerPhone"
+            placeholder="Phone"
+            value={formData.sellerPhone}
+            onChange={handleChange}
+          />
 
-        <label>Email (optional)</label>
-        <input
-          name="sellerEmail"
-          placeholder="Enter email"
-          value={formData.sellerEmail}
-          onChange={handleChange}
-        />
+          <input
+            name="sellerEmail"
+            placeholder="Email (optional)"
+            value={formData.sellerEmail}
+            onChange={handleChange}
+          />
 
-        <label>Upload Image (optional)</label>
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
+          {/* Image */}
+          <input type="file" onChange={handleImageUpload} />
 
-        {uploading && <p>Uploading...</p>}
+          {uploading && <p>Uploading...</p>}
 
-        {formData.image && (
-          <img src={formData.image} alt="preview" className="preview" />
-        )}
+          {formData.image && (
+            <img src={formData.image} className="preview" alt="preview" />
+          )}
 
-        <button type="submit" className="submit-btn">
-          {loading ? "Adding..." : "Add Book"}
-        </button>
-
-      </form>
+          {/* Submit */}
+          <button type="submit" className="submit-btn">
+            {loading ? "Adding..." : "Add Book"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

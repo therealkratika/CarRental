@@ -17,8 +17,6 @@ export default function Navbar({ cartCount = 0 }) {
   return (
     <nav className="navbar">
   <div className="nav-container">
-
-    {/* LEFT */}
     <div className="nav-left">
       <Link to="/" className="logo">
         <div className="logo-box">📚</div>
@@ -28,8 +26,6 @@ export default function Navbar({ cartCount = 0 }) {
         </div>
       </Link>
     </div>
-
-    {/* CENTER */}
     <div className="nav-center">
       <form onSubmit={handleSearch} className="search-form">
         <input
@@ -40,8 +36,6 @@ export default function Navbar({ cartCount = 0 }) {
         />
       </form>
     </div>
-
-    {/* RIGHT */}
     <div className="nav-right">
       <Link to="/books">Browse</Link>
 

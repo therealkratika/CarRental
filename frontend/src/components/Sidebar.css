@@ -1,4 +1,3 @@
-/* SIDEBAR */
 .sidebar {
   width: 240px;
   min-height: 100vh;
@@ -11,14 +10,10 @@
   flex-direction: column;
   justify-content: space-between;
 }
-
-/* TOP */
 .sidebar-top {
   display: flex;
   flex-direction: column;
 }
-
-/* LOGO */
 .logo {
   font-size: 18px;
   font-weight: 700;
@@ -26,15 +21,11 @@
   margin-bottom: 20px;
   padding-left: 8px;
 }
-
-/* NAV LINKS */
 .nav-links {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-
-/* LINKS */
 .nav-links a {
   display: flex;
   align-items: center;
@@ -50,44 +41,32 @@
   transition: all 0.2s ease;
 }
 
-/* TEXT */
 .nav-links a span {
   font-size: 14px;
 }
 
-/* HOVER */
 .nav-links a:hover {
   background: #f3f4f6;
   color: #7c3aed;
 }
-
-/* ACTIVE */
 .nav-links a.active {
   background: linear-gradient(to right, #7c3aed, #a78bfa);
   color: white;
   font-weight: 500;
   box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
 }
-
-/* ADD BOOK (SOFT) */
 .highlight {
   background: #f5f3ff;
   color: #7c3aed;
   font-weight: 500;
 }
-
-/* ACTIVE ADD */
 .highlight.active {
   background: linear-gradient(to right, #7c3aed, #a78bfa);
   color: white;
 }
-
-/* BOTTOM */
 .sidebar-bottom {
   margin-top: 20px;
 }
-
-/* LOGOUT */
 .logout-btn {
   width: 100%;
   padding: 10px;
@@ -103,8 +82,6 @@
 
   transition: 0.2s;
 }
-
-/* HOVER */
 .logout-btn:hover {
   background: #dc2626;
 }

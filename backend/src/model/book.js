@@ -1,53 +1,66 @@
 import mongoose from "mongoose";
 
-const bookSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  description: String,
-  category: String,
-  condition: String,
+const bookSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    author: { type: String, required: true },
 
-  isForSale: Boolean,
-  isForRent: Boolean,
+    description: String,
+    category: String,
 
-  salePrice: Number,
-  rentPricePerDay: Number,
-
-  image: String,
-
-  // ✅ GEO LOCATION
-  location: {
-    type: {
+    condition: {
       type: String,
-      enum: ["Point"],
-      default: "Point",
+      enum: ["New", "Like New", "Good", "Fair"],
+      default: "Good",
     },
-    coordinates: {
-      type: [Number], // [lng, lat]
+
+    image: String,
+
+    // SELL / RENT
+    isForSale: { type: Boolean, default: true },
+    isForRent: { type: Boolean, default: false },
+
+    salePrice: Number,
+    rentPricePerDay: Number,
+
+    // OWNER
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    city: String,
-    area: String,
+
+    // CONTACT (for nearby)
+    contact: {
+      name: String,
+      phone: String,
+      email: String,
+    },
+
+    // LOCATION (GeoJSON)
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+      },
+      coordinates: {
+        type: [Number], // [lng, lat]
+      },
+      city: String,
+      area: String,
+    },
+
+    // STATUS
+    status: {
+      type: String,
+      enum: ["available", "sold", "rented"],
+      default: "available",
+    },
   },
+  { timestamps: true }
+);
 
-  contact: {
-    name: String,
-    phone: String,
-    email: String,
-  },
-
-  status: {
-    type: String,
-    default: "available",
-  },
-
-  rentedForDays: Number,
-
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
-
+// 🔥 IMPORTANT for nearby
 bookSchema.index({ location: "2dsphere" });
 
 export default mongoose.model("Book", bookSchema);

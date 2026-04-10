@@ -1,126 +1,126 @@
 import { useState } from "react";
+import { BookSDK } from "../Api/bookSDK";
 import "./BookDetailsModal.css";
-import { AppSDK } from "../Api/appSdk";
 
-export default function BookDetailModal({ book, onClose, onActionSuccess }) {
-  const [rentalDays, setRentalDays] = useState(7);
-  const [loading, setLoading] = useState(false);
+export default function BookDetailModal({ book, onClose }) {
+  const [rating, setRating] = useState(0);
+  const [, setLoading] = useState(false);
 
   if (!book) return null;
-  const handleAction = async (action) => {
+
+  const handleRating = async (value) => {
     try {
       setLoading(true);
+      setRating(value);
 
-      await AppSDK.handleBookAction(
-        book._id,
-        action,
-        action === "rent" ? rentalDays : 1
-      );
+      await BookSDK.rateBook(book._id, value);
 
-      alert("Success!");
-
-      onActionSuccess && onActionSuccess();
-      onClose();
-
+      alert("Thanks for rating ⭐");
     } catch (err) {
-      alert(err?.message || "Action failed");
+      console.error(err);
+      alert("Rating failed");
     } finally {
       setLoading(false);
     }
   };
-  const handleContact = () => {
-    const phone = book.contact?.phone;
 
-    if (!phone) return alert("Phone not available");
-
-    const message = `Hi! I'm interested in your book "${book.title}"`;
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-
-    window.open(url, "_blank");
-  };
+  const phone = book.contact?.phone || "";
+  const whatsappLink = `https://wa.me/91${phone}`;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <div className="modal-header">
-          <h2>Book Details</h2>
-          <button onClick={onClose}>✖</button>
-        </div>
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* CLOSE BUTTON */}
+        <button className="close-btn" onClick={onClose}>
+          ✖
+        </button>
 
+        {/* IMAGE */}
+        <img
+          src={
+            book.image ||
+            "https://dummyimage.com/200x250/cccccc/000000&text=No+Image"
+          }
+          alt={book.title}
+          className="modal-image"
+        />
+
+        {/* DETAILS */}
         <div className="modal-body">
+          <h2>{book.title}</h2>
+          <p className="author">{book.author}</p>
 
-          <div className="book-section">
+          <p className="category">{book.category}</p>
 
-            <img src={book.image} alt={book.title} />
+          <p className="condition">
+            Condition: {book.condition || "N/A"}
+          </p>
 
-            <div className="book-info">
-              <h3>{book.title}</h3>
-              <p className="author">by {book.author}</p>
-
-              <p className="price">
-                {book.isForSale && `₹${book.salePrice}`}
-                {book.isForRent && `₹${book.rentPricePerDay}/day`}
-              </p>
-
-              <p className="location">
-                📍 {book.location?.city}, {book.location?.area}
-              </p>
-              <div className="seller-box">
-                <h4>Seller Info</h4>
-                <p>👤 {book.contact?.name}</p>
-                <p>📞 {book.contact?.phone}</p>
-                <p>✉️ {book.contact?.email}</p>
-              </div>
-
-            </div>
-          </div>
-          {book.isForRent && (
-            <div className="rent-box">
-              <label>Rental Days</label>
-
-              <div className="rent-row">
-                <input
-                  type="number"
-                  min="1"
-                  value={rentalDays}
-                  onChange={(e) => setRentalDays(e.target.value)}
-                />
-
-                <span>
-                  Total: ₹
-                  {(book.rentPricePerDay * rentalDays).toFixed(2)}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* ACTION BUTTONS */}
-          <div className="actions">
-
+          {/* PRICE */}
+          <div className="price">
+            {book.isForSale && <p>Buy: ₹{book.salePrice}</p>}
             {book.isForRent && (
-              <button
-                className="rent-btn"
-                onClick={() => handleAction("rent")}
-              >
-                {loading ? "Processing..." : "Rent"}
-              </button>
+              <p>Rent: ₹{book.rentPricePerDay}/day</p>
             )}
-
-            {book.isForSale && (
-              <button
-                className="buy-btn"
-                onClick={() => handleAction("buy")}
-              >
-                {loading ? "Processing..." : "Buy"}
-              </button>
-            )}
-
-            <button className="contact-btn" onClick={handleContact}>
-              Contact Seller
-            </button>
-
           </div>
 
+          {/* LOCATION */}
+          <p className="location">
+            📍 {book.location?.city || "Unknown"},{" "}
+            {book.location?.area || ""}
+          </p>
+
+          {/* CONTACT SELLER */}
+          <div className="contact">
+            <h4>Contact Seller</h4>
+
+            <p>Name: {book.contact?.name || "N/A"}</p>
+            <p>Phone: {phone || "N/A"}</p>
+
+            <div className="contact-buttons">
+              {phone && (
+                <>
+                  <a href={`tel:${phone}`} className="call-btn">
+                    📞 Call
+                  </a>
+
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="whatsapp-btn"
+                  >
+                    💬 WhatsApp
+                  </a>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* RATING */}
+          <div className="rating-section">
+            <p>Rate this book:</p>
+
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                onClick={() => handleRating(star)}
+                className={`star ${
+                  star <= rating ? "active" : ""
+                }`}
+              >
+                ⭐
+              </span>
+            ))}
+          </div>
+
+          {/* SHOW AVG RATING */}
+          <p className="avg-rating">
+            ⭐ {book.rating?.toFixed(1) || 0}
+          </p>
         </div>
       </div>
     </div>

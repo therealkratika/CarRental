@@ -1,7 +1,14 @@
 import api from "./Axios";
 
 export const AppSDK = {
-  // ✅ Get user location (FAST + RELIABLE)
+  getProfile: async () => {
+    try {
+      const res = await api.get("/user/profile");
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || err.message;
+    }
+  },
   getCurrentLocation: () => {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
