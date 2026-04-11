@@ -1,6 +1,7 @@
 import{useState} from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import {auth} from '../firebase';
+import { Link } from "react-router-dom";
 import './Auth.css';
 export default function ForgotPassword(){
     const [email, setEmail] = useState("");
@@ -35,6 +36,9 @@ export default function ForgotPassword(){
 
       {message && <p className="message">{message}</p>}
     </form>
+    <p className="switch-text">
+              Back to login? <Link to="/login">Sign in</Link>
+            </p>
   </div>
 
 </div>

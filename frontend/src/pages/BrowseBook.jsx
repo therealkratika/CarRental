@@ -72,7 +72,7 @@ export default function BrowseBooks() {
             />
 
             <button className="nearby-btn" onClick={handleNearby}>
-              {nearbyLoading ? "Finding..." : "📍 Near Me"}
+              {nearbyLoading ? "Finding..." : " Near Me"}
             </button>
           </div>
         </div>
