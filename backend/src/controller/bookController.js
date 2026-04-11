@@ -1,7 +1,5 @@
 import Book from "../model/book.js";
 import Order from "../model/order.js";
-
-/* ================= ADD BOOK ================= */
 export const addBook = async (req, res) => {
   try {
     const {
@@ -70,8 +68,6 @@ export const addBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-/* ================= GET ALL ================= */
 export const getAllBooks = async (req, res) => {
   try {
     const books = await Book.find({ status: "available" })
@@ -83,8 +79,6 @@ export const getAllBooks = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-/* ================= MY BOOKS ================= */
 export const getMyBooks = async (req, res) => {
   try {
     const books = await Book.find({ owner: req.user._id });
@@ -93,8 +87,6 @@ export const getMyBooks = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-/* ================= DELETE ================= */
 export const deleteBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -114,8 +106,6 @@ export const deleteBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-/* ================= NEARBY ================= */
 export const getNearbyBooks = async (req, res) => {
   try {
     const { lat, lng, distance = 5000 } = req.query;
@@ -176,5 +166,52 @@ export const handleBookAction = async (req, res) => {
 
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+export const rateBook = async (req, res) => {
+  try {
+    const { rating } = req.body;
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ message: "Invalid rating" });
+    }
+
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    const existing = book.ratings.find(
+      (r) => String(r.user) === String(req.user._id)
+    );
+
+    if (existing) {
+      existing.value = rating; // update
+    } else {
+      book.ratings.push({
+        user: req.user._id,
+        value: rating,
+      });
+    }
+
+    // ✅ FIXED CALCULATION
+    const total = book.ratings.reduce((sum, r) => sum + r.value, 0);
+
+    const avg = total / book.ratings.length;
+
+    book.rating = Number(avg.toFixed(1)); // ✅ correct
+
+    await book.save();
+
+    res.json({
+      message: "Book rated",
+      rating: book.rating,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      message: err.message || "Rating error",
+    });
   }
 };

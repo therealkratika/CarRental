@@ -95,6 +95,7 @@ export default function BrowseBooks() {
         <BookDetailModal
           book={selectedBook}
           onClose={() => setSelectedBook(null)}
+          onActionSuccess={fetchBooks}
         />
       )}
     </div>

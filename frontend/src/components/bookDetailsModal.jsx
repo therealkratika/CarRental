@@ -2,28 +2,37 @@ import { useState } from "react";
 import { BookSDK } from "../Api/bookSDK";
 import "./BookDetailsModal.css";
 
-export default function BookDetailModal({ book, onClose }) {
-  const [rating, setRating] = useState(0);
+export default function BookDetailModal({ book, onClose, onActionSuccess }) {
+  const [rating, setRating] = useState(book?.userRating || 0);
+  const [hoverRating, setHoverRating] = useState(0);
   const [, setLoading] = useState(false);
 
   if (!book) return null;
 
   const handleRating = async (value) => {
-    try {
-      setLoading(true);
-      setRating(value);
+  try {
+    setLoading(true);
 
-      await BookSDK.rateBook(book._id, value);
+    setRating(value);
 
-      alert("Thanks for rating ⭐");
-    } catch (err) {
-      console.error(err);
-      alert("Rating failed");
-    } finally {
-      setLoading(false);
+    const res = await BookSDK.rateBook(book._id, value);
+    console.log("RES:", res);
+
+    if (res?.rating !== undefined) {
+      book.rating = res.rating;
     }
-  };
 
+    book.userRating = value;
+
+    if (onActionSuccess) onActionSuccess();
+
+  } catch (err) {
+    console.error(err);
+    alert("Rating failed");
+  } finally {
+    setLoading(false);
+  }
+};
   const phone = book.contact?.phone || "";
   const whatsappLink = `https://wa.me/91${phone}`;
 
@@ -73,7 +82,7 @@ export default function BookDetailModal({ book, onClose }) {
             {book.location?.area || ""}
           </p>
 
-          {/* CONTACT SELLER */}
+          {/* CONTACT */}
           <div className="contact">
             <h4>Contact Seller</h4>
 
@@ -100,27 +109,37 @@ export default function BookDetailModal({ book, onClose }) {
             </div>
           </div>
 
-          {/* RATING */}
+          {/* ⭐ RATING WITH HOVER */}
           <div className="rating-section">
-            <p>Rate this book:</p>
+            <p>
+              Rate this book
+              {rating > 0 && (
+                <span className="your-rating">
+                  {" "} (You rated: {rating} ⭐)
+                </span>
+              )}
+            </p>
 
             {[1, 2, 3, 4, 5].map((star) => (
               <span
                 key={star}
-                onClick={() => handleRating(star)}
                 className={`star ${
-                  star <= rating ? "active" : ""
+                  star <= (hoverRating || rating) ? "active" : ""
                 }`}
+                onClick={() => handleRating(star)}
+                onMouseEnter={() => setHoverRating(star)}
+                onMouseLeave={() => setHoverRating(0)}
               >
                 ⭐
               </span>
             ))}
           </div>
 
-          {/* SHOW AVG RATING */}
+          {/* ⭐ AVERAGE */}
           <p className="avg-rating">
-            ⭐ {book.rating?.toFixed(1) || 0}
+            ⭐ {book.rating?.toFixed(1) || "0.0"}
           </p>
+
         </div>
       </div>
     </div>

@@ -80,7 +80,7 @@ export const BookSDK = {
   handleAction: async (id, action, days = 1) => {
     try {
       const res = await api.post(`/books/${id}/action`, {
-        action, // "buy" | "rent"
+        action, 
         days,
       });
       return res.data;
@@ -88,4 +88,13 @@ export const BookSDK = {
       throw err.response?.data || err.message;
     }
   },
+  rateBook: async (id, rating) => {
+  try {
+    const response = await api.post(`/books/${id}/rate`, { rating });
+
+    return response.data; // ✅ MUST BE THIS
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+},
 };

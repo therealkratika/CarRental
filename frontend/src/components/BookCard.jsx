@@ -63,9 +63,11 @@ export default function BookCard({ book, onSelect }) {
         <h3>{book.title}</h3>
         <p className="author">{book.author}</p>
 
-        <p className="rating">
-          ⭐ {book.rating || 0} ({book.reviews || 0})
-        </p>
+       <p className="rating">
+  {book.rating > 0
+    ? `⭐ ${book.rating.toFixed(1)} (${book.ratings?.length || 0})`
+    : "No ratings yet"}
+</p>
 
         <div className="price-section">
           {book.isForSale && <p className="price">₹{book.salePrice}</p>}
