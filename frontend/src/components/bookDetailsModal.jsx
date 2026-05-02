@@ -5,107 +5,86 @@ import "./BookDetailsModal.css";
 export default function BookDetailModal({ book, onClose, onActionSuccess }) {
   const [rating, setRating] = useState(book?.userRating || 0);
   const [hoverRating, setHoverRating] = useState(0);
-  const [, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (!book) return null;
 
   const handleRating = async (value) => {
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
+      setRating(value);
+      const res = await BookSDK.rateBook(book._id, value);
 
-    setRating(value);
+      if (res?.rating !== undefined) {
+        book.rating = res.rating;
+      }
+      book.userRating = value;
 
-    const res = await BookSDK.rateBook(book._id, value);
-    console.log("RES:", res);
-
-    if (res?.rating !== undefined) {
-      book.rating = res.rating;
+      if (onActionSuccess) onActionSuccess();
+    } catch (err) {
+      console.error(err);
+      alert("Rating failed");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    book.userRating = value;
-
-    if (onActionSuccess) onActionSuccess();
-
-  } catch (err) {
-    console.error(err);
-    alert("Rating failed");
-  } finally {
-    setLoading(false);
-  }
-};
   const phone = book.contact?.phone || "";
   const whatsappLink = `https://wa.me/91${phone}`;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+        
         {/* CLOSE BUTTON */}
-        <button className="close-btn" onClick={onClose}>
+        <button className="close-modal" onClick={onClose}>
           ✖
         </button>
 
-        {/* IMAGE */}
-        <img
-          src={
-            book.image ||
-            "https://dummyimage.com/200x250/cccccc/000000&text=No+Image"
-          }
-          alt={book.title}
-          className="modal-image"
-        />
+        {/* IMAGE SECTION */}
+        <div className="modal-image-container">
+          <img
+            src={book.image || "https://dummyimage.com/200x250/cccccc/000000&text=No+Image"}
+            alt={book.title}
+          />
+        </div>
 
-        {/* DETAILS */}
-        <div className="modal-overlay" onClick={onClose}>
-          <h2>{book.title}</h2>
-          <p className="author">{book.author}</p>
+        {/* DETAILS SECTION */}
+        <div className="modal-body">
+          <h2 className="book-title">{book.title}</h2>
+          <p className="author-name">by {book.author}</p>
 
-          <p className="category">{book.category}</p>
-
-          <p className="condition">
-            Condition: {book.condition || "N/A"}
-          </p>
-
-          {/* PRICE */}
-          <div className="price">
-            {book.isForSale && <p>Buy: ₹{book.salePrice}</p>}
-            {book.isForRent && (
-              <p>Rent: ₹{book.rentPricePerDay}/day</p>
-            )}
+          <div className="stats-row">
+            <span className="badge">{book.category}</span>
+            <span className="badge">Condition: {book.condition || "Good"}</span>
           </div>
 
-          {/* LOCATION */}
+          {/* PRICE TAG */}
+          <div className="price-tag">
+            {book.isForSale && <span>Buy: ₹{book.salePrice}</span>}
+            {book.isForSale && book.isForRent && <span style={{margin: '0 10px'}}>|</span>}
+            {book.isForRent && <span>Rent: ₹{book.rentPricePerDay}/day</span>}
+          </div>
+
           <p className="location">
-            📍 {book.location?.city || "Unknown"},{" "}
-            {book.location?.area || ""}
+            📍 {book.location?.city || "Unknown"}, {book.location?.area || ""}
           </p>
 
-          {/* CONTACT */}
-          <div className="contact">
+          {/* SELLER CARD */}
+          <div className="seller-card">
             <h4>Contact Seller</h4>
+            <div className="contact-info">
+              <p>Name: {book.contact?.name || "N/A"}</p>
+              <p>Phone: {phone || "N/A"}</p>
+            </div>
 
-            <p>Name: {book.contact?.name || "N/A"}</p>
-            <p>Phone: {phone || "N/A"}</p>
-
-            <div className="contact-buttons">
+            <div className="action-buttons">
               {phone && (
                 <>
-                  <a
-  href={`tel:${phone}`}
-  onClick={(e) => e.stopPropagation()}
-  className="call-btn"
->📞 Call
+                  <a href={`tel:${phone}`} className="btn call-btn">
+                    📞 Call
                   </a>
-
-                  <a
-  href={whatsappLink}
-  target="_blank"
-  rel="noreferrer"
-  onClick={(e) => e.stopPropagation()}
-  className="whatsapp-btn"
->
+                  <a href={whatsappLink} target="_blank" rel="noreferrer" className="btn whatsapp-btn">
                     💬 WhatsApp
                   </a>
                 </>
@@ -113,37 +92,28 @@ export default function BookDetailModal({ book, onClose, onActionSuccess }) {
             </div>
           </div>
 
-          {/* ⭐ RATING WITH HOVER */}
+          {/* RATING SECTION */}
           <div className="rating-section">
-            <p>
-              Rate this book
-              {rating > 0 && (
-                <span className="your-rating">
-                  {" "} (You rated: {rating} ⭐)
-                </span>
-              )}
+            <p style={{marginBottom: '5px', fontWeight: 'bold'}}>
+              Rate this book {rating > 0 && <span style={{color: '#5e548e'}}>(Your rating: {rating})</span>}
             </p>
-
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span
-                key={star}
-                className={`star ${
-                  star <= (hoverRating || rating) ? "active" : ""
-                }`}
-                onClick={() => handleRating(star)}
-                onMouseEnter={() => setHoverRating(star)}
-                onMouseLeave={() => setHoverRating(0)}
-              >
-                ⭐
+            <div className="stars-wrapper">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`star ${star <= (hoverRating || rating) ? "active" : ""}`}
+                  onClick={() => handleRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
+                >
+                  ★
+                </span>
+              ))}
+              <span className="avg-rating">
+                 ({book.rating?.toFixed(1) || "0.0"})
               </span>
-            ))}
+            </div>
           </div>
-
-          {/* ⭐ AVERAGE */}
-          <p className="avg-rating">
-            ⭐ {book.rating?.toFixed(1) || "0.0"}
-          </p>
-
         </div>
       </div>
     </div>
