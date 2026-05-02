@@ -1,7 +1,5 @@
 import Wishlist from "../model/wishlist.js";
 import Book from "../model/book.js";
-
-/* ================= ADD ================= */
 export const addToWishlist = async (req, res) => {
   try {
     const { bookId } = req.body;
@@ -9,14 +7,10 @@ export const addToWishlist = async (req, res) => {
     if (!bookId) {
       return res.status(400).json({ message: "Book ID required" });
     }
-
-    // check if book exists
     const book = await Book.findById(bookId);
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-
-    // prevent duplicate
     const exists = await Wishlist.findOne({
       user: req.user._id,
       book: bookId,
@@ -38,14 +32,11 @@ export const addToWishlist = async (req, res) => {
   }
 };
 
-/* ================= GET ================= */
 export const getWishlist = async (req, res) => {
   try {
     const items = await Wishlist.find({ user: req.user._id })
       .populate("book")
       .sort({ createdAt: -1 });
-
-    // return only books
     const books = items.map((i) => i.book);
 
     res.json(books);
@@ -55,7 +46,6 @@ export const getWishlist = async (req, res) => {
   }
 };
 
-/* ================= REMOVE ================= */
 export const removeFromWishlist = async (req, res) => {
   try {
     const { bookId } = req.params;

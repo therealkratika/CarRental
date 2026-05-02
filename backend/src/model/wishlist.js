@@ -17,7 +17,6 @@ const wishlistSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// 🔥 Prevent duplicate wishlist items
 wishlistSchema.index({ user: 1, book: 1 }, { unique: true });
 
 export default mongoose.model("Wishlist", wishlistSchema);

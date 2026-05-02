@@ -10,16 +10,18 @@ import MyBooks from "./pages/MyBook";
 import AddBook from "./pages/AddBook";
 import ProfilePage from "./pages/ProfilePage";
 // Components
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 
 import "./App.css";
-
 /* ================= PROTECTED ROUTE ================= */
 const ProtectedRoute = ({ children }) => {
-  const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
 
-  if (!user) {
+  if (!token) {
     return <Navigate to="/login" />;
   }
 
@@ -49,6 +51,18 @@ const DashboardLayout = () => {
 
 /* ================= APP ================= */
 export default function App() {
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const token = await user.getIdToken();
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
   return (
     <BrowserRouter>
       <Routes>

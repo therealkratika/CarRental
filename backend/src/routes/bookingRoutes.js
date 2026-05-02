@@ -13,8 +13,8 @@ import {
 import { verifyFirebaseToken } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-router.get("/nearby", getNearbyBooks);
-router.get("/", getAllBooks);
+router.get("/nearby", verifyFirebaseToken,getNearbyBooks);
+router.get("/",verifyFirebaseToken, getAllBooks);
 router.get("/my", verifyFirebaseToken, getMyBooks);
 router.post("/", verifyFirebaseToken, addBook);
 router.post("/:id/action", verifyFirebaseToken, handleBookAction);

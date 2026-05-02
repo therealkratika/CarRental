@@ -1,5 +1,7 @@
 import Book from "../model/book.js";
 import Order from "../model/order.js";
+import Wishlist from "../model/wishlist.js";
+
 export const addBook = async (req, res) => {
   try {
     const {
@@ -68,13 +70,31 @@ export const addBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 export const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find({ status: "available" })
-      .populate("owner", "name phone email")
-      .sort({ createdAt: -1 });
+    // 1. Fetch all books
+    const books = await Book.find().lean(); // .lean() makes them plain JS objects so we can add properties
 
-    res.json(books);
+    // 2. If no user is logged in, return books as is
+    if (!req.user) {
+      return res.json(books);
+    }
+
+    // 3. Find all wishlist entries for THIS specific user
+    const userWishlist = await Wishlist.find({ user: req.user._id });
+    
+    // Create a Set of book IDs for fast lookup
+    const wishlistedBookIds = new Set(userWishlist.map(item => item.book.toString()));
+
+    // 4. Map through books and attach the true isWishlisted status
+    const booksWithStatus = books.map(book => ({
+      ...book,
+      isWishlisted: wishlistedBookIds.has(book._id.toString())
+    }));
+
+    res.json(booksWithStatus);
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

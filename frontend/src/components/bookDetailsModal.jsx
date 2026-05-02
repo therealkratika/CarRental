@@ -58,7 +58,7 @@ export default function BookDetailModal({ book, onClose, onActionSuccess }) {
         />
 
         {/* DETAILS */}
-        <div className="modal-body">
+        <div className="modal-overlay" onClick={onClose}>
           <h2>{book.title}</h2>
           <p className="author">{book.author}</p>
 
@@ -92,16 +92,20 @@ export default function BookDetailModal({ book, onClose, onActionSuccess }) {
             <div className="contact-buttons">
               {phone && (
                 <>
-                  <a href={`tel:${phone}`} className="call-btn">
-                    📞 Call
+                  <a
+  href={`tel:${phone}`}
+  onClick={(e) => e.stopPropagation()}
+  className="call-btn"
+>📞 Call
                   </a>
 
                   <a
-                    href={whatsappLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="whatsapp-btn"
-                  >
+  href={whatsappLink}
+  target="_blank"
+  rel="noreferrer"
+  onClick={(e) => e.stopPropagation()}
+  className="whatsapp-btn"
+>
                     💬 WhatsApp
                   </a>
                 </>

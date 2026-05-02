@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { BookSDK } from "../Api/bookSDK";
 import { AppSDK } from "../Api/appSdk";
 import BookCard from "../components/BookCard";
@@ -11,9 +11,13 @@ export default function BrowseBooks() {
   const [nearbyLoading, setNearbyLoading] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [search, setSearch] = useState("");
-  const fetchBooks = async () => {
+
+  // fetchBooks now accepts an 'isRefresh' flag
+  const fetchBooks = useCallback(async (isRefresh = false) => {
     try {
-      setLoading(true);
+      // Only show the big loading spinner on the first load
+      if (!isRefresh) setLoading(true); 
+      
       const data = await BookSDK.getAll();
       setBooks(data);
     } catch (err) {
@@ -22,24 +26,20 @@ export default function BrowseBooks() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, [fetchBooks]);
+
   const handleNearby = async () => {
     try {
       setNearbyLoading(true);
-
       const loc = await AppSDK.getCurrentLocation();
-
-      if (!loc?.lat || !loc?.lng) {
-        throw new Error("Invalid location");
-      }
+      if (!loc?.lat || !loc?.lng) throw new Error("Invalid location");
 
       const data = await BookSDK.getNearby(loc.lat, loc.lng);
       setBooks(data);
-
     } catch (err) {
       console.error(err);
       alert("Location error");
@@ -47,13 +47,13 @@ export default function BrowseBooks() {
       setNearbyLoading(false);
     }
   };
+
   const filteredBooks = books.filter((book) =>
-    (book.title + book.author)
-      .toLowerCase()
-      .includes(search.toLowerCase())
+    (book.title + book.author).toLowerCase().includes(search.toLowerCase())
   );
+
   if (loading) {
-    return <p className="loading">Loading books...</p>;
+    return <div className="loading-container"><p className="loading">Loading books...</p></div>;
   }
 
   return (
@@ -61,7 +61,6 @@ export default function BrowseBooks() {
       <div className="main-content">
         <div className="top-bar">
           <h2>Browse Books</h2>
-
           <div className="top-actions">
             <input
               type="text"
@@ -70,12 +69,12 @@ export default function BrowseBooks() {
               onChange={(e) => setSearch(e.target.value)}
               className="search-input"
             />
-
             <button className="nearby-btn" onClick={handleNearby}>
               {nearbyLoading ? "Finding..." : " Near Me"}
             </button>
           </div>
         </div>
+
         {filteredBooks.length === 0 ? (
           <p className="empty">No books available</p>
         ) : (
@@ -85,17 +84,19 @@ export default function BrowseBooks() {
                 key={book._id}
                 book={book}
                 onSelect={setSelectedBook} 
+                // FIXED: Wrapped in an arrow function so it doesn't execute immediately
+                onRefresh={() => fetchBooks(true)} 
               />
             ))}
           </div>
         )}
-
       </div>
+
       {selectedBook && (
         <BookDetailModal
           book={selectedBook}
           onClose={() => setSelectedBook(null)}
-          onActionSuccess={fetchBooks}
+          onActionSuccess={() => fetchBooks(true)}
         />
       )}
     </div>

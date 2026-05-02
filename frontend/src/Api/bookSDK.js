@@ -3,7 +3,13 @@ import api from "./Axios";
 export const BookSDK = {
   getAll: async () => {
     try {
-      const res = await api.get("/books");
+      const res = await api.get("/books", {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
+      });
       return res.data;
     } catch (err) {
       throw err.response?.data || err.message;

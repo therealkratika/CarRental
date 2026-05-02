@@ -27,7 +27,10 @@ export default function Navbar({ cartCount = 0 }) {
       </Link>
     </div>
     <div className="nav-center">
-      <form onSubmit={handleSearch} className="search-form">
+      <form onSubmit={e=>{
+        e.preventDefault();
+        handleSearch(e);
+      }} className="search-form">
         <input
           type="text"
           placeholder="Search books..."
