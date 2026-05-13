@@ -1,4 +1,4 @@
-import { useState } from "react"; // Added useState
+import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthSDK } from "../Api/sdk";
 import { 
@@ -40,7 +40,8 @@ export default function Sidebar() {
     <>
       <button 
         onClick={toggleSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-violet-600 text-white rounded-lg shadow-lg"
+        aria-label="Toggle Menu"
+        className="fixed top-4 left-4 z-[60] p-2 bg-violet-600 text-white rounded-lg shadow-lg lg:hidden block"
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -51,8 +52,13 @@ export default function Sidebar() {
         />
       )}
       <aside className={`
-        fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-slate-100 px-6 py-10 transition-transform duration-300 ease-in-out
-        lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen flex flex-col
+        /* Base styles (Mobile): Fixed, slide-in from left */
+        fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-100 px-6 py-10 transition-transform duration-300 ease-in-out
+        
+        /* Desktop overrides: Always visible, sticky position */
+        lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:flex lg:z-30
+        
+        /* Toggle state for mobile */
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
         <div className="flex items-center gap-3 px-2 mb-12">
@@ -64,8 +70,7 @@ export default function Sidebar() {
           </h2>
         </div>
 
-        {/* NAVIGATION */}
-        <nav className="flex-1 space-y-2">
+        <nav className="flex-1 space-y-2 overflow-y-auto">
           {navItems.map((item) => (
             <Link
               key={item.path}
@@ -85,7 +90,6 @@ export default function Sidebar() {
           ))}
         </nav>
 
-        {/* LOGOUT */}
         <div className="pt-6 border-t border-slate-50">
           <button
             onClick={handleLogout}
