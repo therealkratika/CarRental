@@ -35,5 +35,13 @@ export const AuthSDK = {
         }catch(err){
             throw new Error(err.message);
         }
+    },
+    logout: async ()=>{
+        try{
+            await signOut(auth);
+            localStorage.removeItem("token");
+        }catch(err){
+            throw new Error(err.message);
+        }
     }
 }
