@@ -1,19 +1,22 @@
 import Wishlist from "../model/wishlist.js";
 import Book from "../model/book.js";
+import mongoose from "mongoose";
+
 export const addToWishlist = async (req, res) => {
   try {
     const { bookId } = req.body;
-
-    if (!bookId) {
-      return res.status(400).json({ message: "Book ID required" });
+    if (!bookId || typeof bookId !== 'string' || !mongoose.Types.ObjectId.isValid(bookId)) {
+      return res.status(400).json({ message: "Valid Book ID required" });
     }
+
     const book = await Book.findById(bookId);
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
+
     const exists = await Wishlist.findOne({
       user: req.user._id,
-      book: bookId,
+      book: String(bookId),
     });
 
     if (exists) {
@@ -22,7 +25,7 @@ export const addToWishlist = async (req, res) => {
 
     const item = await Wishlist.create({
       user: req.user._id,
-      book: bookId,
+      book: String(bookId),
     });
 
     res.status(201).json(item);
@@ -50,9 +53,13 @@ export const removeFromWishlist = async (req, res) => {
   try {
     const { bookId } = req.params;
 
+    if (!bookId || typeof bookId !== 'string' || !mongoose.Types.ObjectId.isValid(bookId)) {
+      return res.status(400).json({ message: "Valid Book ID required" });
+    }
+
     const item = await Wishlist.findOneAndDelete({
       user: req.user._id,
-      book: bookId,
+      book: String(bookId),
     });
 
     if (!item) {
