@@ -98,8 +98,6 @@ export default function Navbar({ cartCount = 0 }) {
             </button>
           </div>
         </div>
-
-        {/* Mobile Dropdown */}
         {isMenuOpen && (
           <div className="md:hidden pb-6 pt-2 border-t border-slate-50 animate-in fade-in slide-in-from-top-2">
              <div className="mt-4 space-y-4">
