@@ -60,16 +60,13 @@ export default function MyBooks() {
   }
 
   return (
+    <div className="pt-20 md:pt-0">
     <div className="max-w-7xl mx-auto px-6 py-10 space-y-10 animate-in fade-in duration-700">
-      
-      {/* --- HEADER SECTION --- */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">Your Inventory</h1>
           <p className="text-slate-500 font-medium mt-1">Manage the books you've listed for the community.</p>
         </div>
-        
-        {/* Quick Stats Summary */}
         <div className="flex gap-4">
            <div className="bg-violet-50 px-6 py-3 rounded-2xl border border-violet-100">
              <p className="text-[10px] font-black text-violet-400 uppercase tracking-wider">Total Listings</p>
@@ -165,5 +162,7 @@ export default function MyBooks() {
         </div>
       )}
     </div>
+    
+</div>
   );
 }

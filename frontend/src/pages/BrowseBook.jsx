@@ -58,6 +58,8 @@ export default function BrowseBooks() {
   }
 
   return (
+    <div className="pt-20 md:pt-0">
+  
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* --- HEADER & FILTERS --- */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -138,6 +140,7 @@ export default function BrowseBooks() {
           onActionSuccess={() => fetchBooks(true)}
         />
       )}
+    </div>
     </div>
   );
 }
