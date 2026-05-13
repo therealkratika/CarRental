@@ -28,11 +28,9 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-violet-100 via-white to-white px-4 py-12">
-      {/* Background Decorative Element */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-600 to-indigo-500" />
 
       <div className="w-full max-w-md">
-        {/* Logo Branding */}
         <div className="flex flex-col items-center mb-8">
           <div className="w-12 h-12 bg-violet-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-violet-200 mb-4 transition-transform hover:rotate-12">
             <Library size={28} />
@@ -41,8 +39,6 @@ export default function Signup() {
             Book<span className="text-violet-600">Hub</span>
           </h1>
         </div>
-
-        {/* Auth Card */}
         <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(124,58,237,0.1)] border border-gray-100">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-black text-slate-900">Get Started</h2>
@@ -50,7 +46,6 @@ export default function Signup() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Username Field */}
             <div className="space-y-1.5">
               <label className="text-sm font-bold text-slate-700 ml-1">Username</label>
               <div className="relative group">
@@ -59,15 +54,13 @@ export default function Signup() {
                 </div>
                 <input
                   type="text"
-                  placeholder="johndoe"
+                  placeholder="username"
                   className={`block w-full bg-slate-50 border-2 ${errors.username ? "border-red-100" : "border-transparent"} focus:border-violet-200 focus:bg-white rounded-2xl py-3 pl-11 pr-4 text-sm transition-all outline-none`}
                   {...register('username', { required: 'Username is required' })}
                 />
               </div>
               {errors.username && <p className="text-xs font-bold text-red-500 ml-1 mt-1">{errors.username.message}</p>}
             </div>
-
-            {/* Email Field */}
             <div className="space-y-1.5">
               <label className="text-sm font-bold text-slate-700 ml-1">Email Address</label>
               <div className="relative group">
@@ -86,8 +79,6 @@ export default function Signup() {
               </div>
               {errors.email && <p className="text-xs font-bold text-red-500 ml-1 mt-1">{errors.email.message}</p>}
             </div>
-
-            {/* Password Field */}
             <div className="space-y-1.5">
               <label className="text-sm font-bold text-slate-700 ml-1">Password</label>
               <div className="relative group">
@@ -106,8 +97,6 @@ export default function Signup() {
               </div>
               {errors.password && <p className="text-xs font-bold text-red-500 ml-1 mt-1">{errors.password.message}</p>}
             </div>
-
-            {/* Confirm Password Field */}
             <div className="space-y-1.5">
               <label className="text-sm font-bold text-slate-700 ml-1">Confirm Password</label>
               <div className="relative group">
@@ -123,15 +112,11 @@ export default function Signup() {
               </div>
               {errors.confirmPassword && <p className="text-xs font-bold text-red-500 ml-1 mt-1">{errors.confirmPassword.message}</p>}
             </div>
-
-            {/* Root/General Error */}
             {errors.root && (
               <div className="p-3 rounded-xl bg-red-50 border border-red-100">
                 <p className="text-xs font-bold text-red-600 text-center">{errors.root.message}</p>
               </div>
             )}
-
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -150,8 +135,6 @@ export default function Signup() {
               )}
             </button>
           </form>
-
-          {/* Footer Link */}
           <div className="mt-8 text-center border-t border-slate-50 pt-6">
             <p className="text-sm font-medium text-slate-500">
               Already have an account?{" "}
