@@ -42,17 +42,12 @@ const ProtectedRoute = ({ children }) => {
   return authenticated ? children : <Navigate to="/login" replace />;
 };
 
-/* ================= DASHBOARD LAYOUT ================= */
-
 const DashboardLayout = () => {
   return (
     <div className="flex min-h-screen bg-gray-50 overflow-hidden">
       
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
-      <div className="flex-1 min-w-0 md:ml-72">
+      <div className="flex-1 min-w-0">
         <main className="pt-20 md:pt-8 p-4 md:p-8 h-screen overflow-y-auto">
           <Routes>
             <Route path="browse" element={<BrowseBooks />} />
