@@ -38,29 +38,35 @@ export default function Sidebar() {
 
   return (
     <>
+      {/* --- MOBILE HAMBURGER (Visible ONLY below 768px) --- */}
       <button 
         onClick={toggleSidebar}
         aria-label="Toggle Menu"
-        className="fixed top-4 left-4 z-[60] p-2 bg-violet-600 text-white rounded-lg shadow-lg lg:hidden block"
+        className="fixed top-4 left-4 z-[60] p-2 bg-violet-600 text-white rounded-lg shadow-lg md:hidden"
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
+
+      {/* --- MOBILE OVERLAY (Visible ONLY when open on mobile) --- */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
           onClick={toggleSidebar}
         />
       )}
+
+      {/* --- SIDEBAR --- */}
       <aside className={`
-        /* Base styles (Mobile): Fixed, slide-in from left */
+        /* Mobile Styles: Slides in from left */
         fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-100 px-6 py-10 transition-transform duration-300 ease-in-out
         
-        /* Desktop overrides: Always visible, sticky position */
-        lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:flex lg:z-30
+        /* Desktop/Tablet Styles (768px+): Always visible, sticky position */
+        md:translate-x-0 md:sticky md:top-0 md:h-screen md:flex md:z-30
         
-        /* Toggle state for mobile */
+        /* State toggle for mobile */
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
+        {/* Branding */}
         <div className="flex items-center gap-3 px-2 mb-12">
           <div className="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-violet-200">
             <Library size={24} />
@@ -70,12 +76,13 @@ export default function Sidebar() {
           </h2>
         </div>
 
+        {/* Navigation Links */}
         <nav className="flex-1 space-y-2 overflow-y-auto">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              onClick={() => setIsOpen(false)} 
+              onClick={() => setIsOpen(false)} // Close menu on click (mobile only)
               className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition-all duration-200 group ${
                 isActive(item.path)
                   ? "bg-violet-600 text-white shadow-lg shadow-violet-200"
@@ -90,6 +97,7 @@ export default function Sidebar() {
           ))}
         </nav>
 
+        {/* Logout Section */}
         <div className="pt-6 border-t border-slate-50">
           <button
             onClick={handleLogout}
