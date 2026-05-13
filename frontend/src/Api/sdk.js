@@ -12,7 +12,7 @@ export const AuthSDK = {
             await updateProfile(user, {displayName: username});
             await sendEmailVerification(user);
             await signOut(auth);
-            return {message: 'VErification email sent'};
+            return {message: 'Verification email sent'};
         }catch(error){
             throw new Error(error.message);
         }
