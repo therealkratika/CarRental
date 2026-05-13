@@ -37,19 +37,14 @@ export default function Navbar({ cartCount = 0 }) {
             </div>
           </Link>
 
-          {/* 2. Center Search Bar - Improved Alignment */}
-         {/* Center: Search Bar */}
 <div className="hidden md:flex flex-1 max-w-lg px-8">
   <form onSubmit={handleSearch} className="relative w-full group">
-    {/* Icon Container - Perfectly Centered Vertically */}
     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
       <Search 
         className="text-slate-400 group-focus-within:text-violet-500 transition-colors" 
         size={18} 
       />
     </div>
-    
-    {/* Input - Increased height (py-3) and pill-shaped (rounded-2xl) */}
     <input
       type="text"
       placeholder="Search by title, author, or ISBN..."
@@ -88,8 +83,6 @@ export default function Navbar({ cartCount = 0 }) {
               <LogIn size={18} />
               <span className="hidden sm:inline">Login</span>
             </Link>
-
-            {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"

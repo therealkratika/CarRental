@@ -49,10 +49,8 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-10 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      
-      {/* --- HERO PROFILE SECTION --- */}
-      <div className="relative overflow-hidden bg-white rounded-[3rem] border border-slate-100 shadow-sm p-8 md:p-12">
-        {/* Background Decorative Gradient */}
+       <div className="relative overflow-hidden bg-white rounded-[3rem] border border-slate-100 shadow-sm p-8 md:p-12">
+    
         <div className="absolute top-0 right-0 w-64 h-64 bg-violet-50 rounded-full -mr-20 -mt-20 blur-3xl opacity-50" />
         
         <div className="relative flex flex-col md:flex-row items-center gap-8">

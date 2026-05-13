@@ -5,14 +5,19 @@ import { auth } from "./firebase";
 
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+
 import Landing from "./pages/Landing";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/forgotPassword";
+
 import BrowseBooks from "./pages/BrowseBook";
 import MyBooks from "./pages/MyBook";
 import AddBook from "./pages/AddBook";
 import ProfilePage from "./pages/ProfilePage";
+
+/* ================= PROTECTED ROUTE ================= */
+
 const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
@@ -22,6 +27,7 @@ const ProtectedRoute = ({ children }) => {
       setAuthenticated(!!user);
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -35,27 +41,37 @@ const ProtectedRoute = ({ children }) => {
 
   return authenticated ? children : <Navigate to="/login" replace />;
 };
+
+/* ================= DASHBOARD LAYOUT ================= */
+
 const DashboardLayout = () => {
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <div className="hidden md:block w-64 flex-shrink-0 border-r border-gray-200 bg-white">
-        <Sidebar />
-      </div>
+    <div className="flex min-h-screen bg-gray-50 overflow-hidden">
+      
+      {/* Sidebar */}
+      <Sidebar />
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+      {/* Main Content */}
+      <div className="flex-1 min-w-0 md:ml-72">
+        <main className="pt-20 md:pt-8 p-4 md:p-8 h-screen overflow-y-auto">
           <Routes>
             <Route path="browse" element={<BrowseBooks />} />
             <Route path="my-books" element={<MyBooks />} />
             <Route path="add-book" element={<AddBook />} />
             <Route path="profile" element={<ProfilePage />} />
-            <Route path="*" element={<Navigate to="browse" replace />} />
+
+            <Route
+              path="*"
+              element={<Navigate to="browse" replace />}
+            />
           </Routes>
         </main>
       </div>
     </div>
   );
 };
+
+/* ================= APP ================= */
 
 export default function App() {
   useEffect(() => {
@@ -85,7 +101,10 @@ export default function App() {
         />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
         <Route
           path="/dashboard/*"
           element={
