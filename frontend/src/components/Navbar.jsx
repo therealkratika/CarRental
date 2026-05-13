@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, BookOpen, Heart, ShoppingCart, LogIn, Library, Menu, X } from "lucide-react";
+import { Search, BookOpen, Heart, LogIn, Library, Menu, X } from "lucide-react";
 
 export default function Navbar({ cartCount = 0 }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,7 +58,6 @@ export default function Navbar({ cartCount = 0 }) {
       onChange={(e) => setSearchQuery(e.target.value)}
     />
     
-    {/* Optional: Add a 'Cmd + K' or 'Enter' hint for a premium feel */}
     <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
        <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-medium text-slate-400 border border-slate-200 rounded bg-white">
          Enter
@@ -66,8 +65,6 @@ export default function Navbar({ cartCount = 0 }) {
     </div>
   </form>
 </div>
-
-          {/* 3. Right Side Actions - Better Spacing */}
           <div className="flex items-center gap-2 md:gap-5">
             <Link 
               to="/books" 
@@ -82,14 +79,6 @@ export default function Navbar({ cartCount = 0 }) {
                 <Heart size={22} />
               </Link>
 
-              <Link to="/cart" className="p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-all relative">
-                <ShoppingCart size={22} />
-                {cartCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 bg-violet-600 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full ring-2 ring-white">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
             </div>
 
             <Link 

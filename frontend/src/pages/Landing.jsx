@@ -158,38 +158,6 @@ export default function Landing() {
             </div>
             <Link to="/dashboard" className="text-violet-600 font-bold hover:underline">View All →</Link>
           </div>
-
-          {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-violet-600"></div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-              {books.slice(0, 6).map((book) => (
-                <div key={book.id} className="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-2xl transition-all group">
-                  <div className="aspect-[2/3] overflow-hidden relative">
-                    <img
-                      src={book.image || "https://via.placeholder.com/300x450"}
-                      alt={book.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur px-2 py-1 rounded-lg text-xs font-black text-violet-600 shadow-sm">
-                      ₹{book.price}
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-slate-900 text-sm line-clamp-1 group-hover:text-violet-600 transition-colors">
-                      {book.title}
-                    </h3>
-                    <p className="text-xs text-slate-500 mb-4">{book.author}</p>
-                    <Link to={`/dashboard/${book.id}`} className="block text-center py-2 rounded-xl bg-slate-50 text-slate-700 text-xs font-bold hover:bg-violet-600 hover:text-white transition-all">
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </section>
       <section className="px-4 py-20">
